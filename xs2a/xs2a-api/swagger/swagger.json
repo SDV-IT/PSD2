@@ -1,0 +1,1906 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Reference Implementation of XS2A REST Services",
+    "version" : "0.9.2-SNAPSHOT",
+    "title" : "XS2A Services",
+    "contact" : {
+      "name" : "Piotr Wiczewski",
+      "email" : "piotr.wiczewski@spb.de"
+    }
+  },
+  "host" : "uedaexj1.spb.de:8080",
+  "basePath" : "/tpp",
+  "tags" : [ {
+    "name" : "Accounts"
+  }, {
+    "name" : "Confirmation"
+  }, {
+    "name" : "Consents"
+  }, {
+    "name" : "Payments"
+  } ],
+  "schemes" : [ "http", "https" ],
+  "paths" : {
+    "/{version}/accounts" : {
+      "get" : {
+        "tags" : [ "Accounts" ],
+        "summary" : "Read Account List (page 59) - reads all accounts belonging to PSU identified by OAuth2 Access Token",
+        "description" : "",
+        "operationId" : "readAccountList",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "path",
+          "description" : "Version",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Process-ID",
+          "in" : "header",
+          "description" : "ID of the transaction as determined by the initiating party (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Request-ID",
+          "in" : "header",
+          "description" : "ID of the request (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Consent-ID",
+          "in" : "header",
+          "description" : "Shall be contained if Consent Trasaction was performed via this API before",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "PSU-ID",
+          "in" : "header",
+          "description" : "To be used if no OAuth Pre-Step was performed",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Access Token as obtained from Authorization Server",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK, accounts returned",
+            "schema" : {
+              "$ref" : "#/definitions/AccountResponse"
+            }
+          },
+          "400" : {
+            "description" : "(Bad Request) Validation error occured"
+          },
+          "401" : {
+            "description" : "(Unauthorized) Access Token is not valid"
+          }
+        }
+      }
+    },
+    "/{version}/accounts/{account-id}/balances" : {
+      "get" : {
+        "tags" : [ "Accounts" ],
+        "summary" : "Read Balance (page 61) - reads all balances according to specified account",
+        "description" : "",
+        "operationId" : "readBalance",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "path",
+          "description" : "Version",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "account-id",
+          "in" : "path",
+          "description" : "Account ID",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Process-ID",
+          "in" : "header",
+          "description" : "ID of the transaction as determined by the initiating party (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Request-ID",
+          "in" : "header",
+          "description" : "ID of the request (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Consent-ID",
+          "in" : "header",
+          "description" : "Consent-ID as from Trasaction performed via this API before",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "PSU-ID",
+          "in" : "header",
+          "description" : "To be used if no OAuth Pre-Step was performed",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Access Token as obtained from Authorization Server",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "signature",
+          "in" : "header",
+          "description" : "A signature of the request by the TPP on application level",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "certificate",
+          "in" : "header",
+          "description" : "The certificate used for signing the request",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Date",
+          "in" : "header",
+          "description" : "Standard https header element for Date and Time",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK, balances returned",
+            "schema" : {
+              "$ref" : "#/definitions/AccountBalanceResponse"
+            }
+          },
+          "400" : {
+            "description" : "(Bad Request) Validation error occured"
+          },
+          "401" : {
+            "description" : "(Unauthorized) Access Token is not valid"
+          }
+        }
+      }
+    },
+    "/{version}/accounts/{account-id}/transactions" : {
+      "get" : {
+        "tags" : [ "Accounts" ],
+        "summary" : "Read Transaction List (page 64) - reads all transactions according to specified account",
+        "description" : "",
+        "operationId" : "readTransactions",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "path",
+          "description" : "Version",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "account-id",
+          "in" : "path",
+          "description" : "Account ID",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Process-ID",
+          "in" : "header",
+          "description" : "ID of the transaction as determined by the initiating party (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Request-ID",
+          "in" : "header",
+          "description" : "ID of the request (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Consent-ID",
+          "in" : "header",
+          "description" : "Consent-ID as from Trasaction performed via this API before",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "PSU-ID",
+          "in" : "header",
+          "description" : "To be used if no OAuth Pre-Step was performed",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Access Token as obtained from Authorization Server",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "signature",
+          "in" : "header",
+          "description" : "A signature of the request by the TPP on application level",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "certificate",
+          "in" : "header",
+          "description" : "The certificate used for signing the request",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Date",
+          "in" : "header",
+          "description" : "Standard https header element for Date and Time",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "date_from",
+          "in" : "query",
+          "description" : "Date from",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "date_to",
+          "in" : "query",
+          "description" : "Date to",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK, transactions returned",
+            "schema" : {
+              "$ref" : "#/definitions/AccountTransactionsResponse"
+            }
+          },
+          "400" : {
+            "description" : "(Bad Request) Validation error occured"
+          },
+          "401" : {
+            "description" : "(Unauthorized) Access Token is not valid"
+          }
+        }
+      }
+    },
+    "/{version}/accounts/{account-id}/transactions/{page}" : {
+      "get" : {
+        "tags" : [ "Accounts" ],
+        "summary" : "Read Transaction List (page 64) - reads all transactions according to specified account with pagination",
+        "description" : "",
+        "operationId" : "readTransactionsPage",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "path",
+          "description" : "Version",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "account-id",
+          "in" : "path",
+          "description" : "Account ID",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "page",
+          "in" : "path",
+          "description" : "-- / first /second / current / last",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Process-ID",
+          "in" : "header",
+          "description" : "ID of the transaction as determined by the initiating party (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Request-ID",
+          "in" : "header",
+          "description" : "ID of the request (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Consent-ID",
+          "in" : "header",
+          "description" : "Consent-ID as from Trasaction performed via this API before",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "PSU-ID",
+          "in" : "header",
+          "description" : "To be used if no OAuth Pre-Step was performed",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Access Token as obtained from Authorization Server",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "signature",
+          "in" : "header",
+          "description" : "A signature of the request by the TPP on application level",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "certificate",
+          "in" : "header",
+          "description" : "The certificate used for signing the request",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Date",
+          "in" : "header",
+          "description" : "Standard https header element for Date and Time",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "date_from",
+          "in" : "query",
+          "description" : "Date from",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "date_to",
+          "in" : "query",
+          "description" : "Date to",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK, transactions returned",
+            "schema" : {
+              "$ref" : "#/definitions/AccountTransactionsResponse"
+            }
+          },
+          "400" : {
+            "description" : "(Bad Request) Validation error occured"
+          },
+          "401" : {
+            "description" : "(Unauthorized) Access Token is not valid"
+          }
+        }
+      }
+    },
+    "/{version}/confirmation-of-funds/{provider-id}" : {
+      "post" : {
+        "tags" : [ "Confirmation" ],
+        "summary" : "Confirmation of Funds (page 84) - creates a confirmation of funds request at the ASPSP",
+        "description" : "",
+        "operationId" : "confirmationOfFunds",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "path",
+          "description" : "Version",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "provider-id",
+          "in" : "path",
+          "description" : "Provider Identification",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Process-ID",
+          "in" : "header",
+          "description" : "ID of the transaction as determined by the initiating party (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Request-ID",
+          "in" : "header",
+          "description" : "ID of the request (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "signature",
+          "in" : "header",
+          "description" : "A signature of the request by the TPP on application level",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "certificate",
+          "in" : "header",
+          "description" : "The certificate used for signing the request",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Date",
+          "in" : "header",
+          "description" : "Standard https header element for Date and Time",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Request body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ConfirmationOfFundsRequest"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "OK, funds request was correctly performe",
+            "schema" : {
+              "$ref" : "#/definitions/ConfirmationOfFundsResponse"
+            }
+          },
+          "400" : {
+            "description" : "(Bad Request) Validation error occured"
+          },
+          "401" : {
+            "description" : "(Unauthorized) Access Token is not valid"
+          },
+          "406" : {
+            "description" : "(Not Acceptable) ? - not documented but necessary hier"
+          }
+        }
+      }
+    },
+    "/{version}/consents" : {
+      "post" : {
+        "tags" : [ "Consents" ],
+        "summary" : "Account Information Consent Request (page 48) - creates an account information consent resource at the ASPSP regarding access to specified accounts",
+        "description" : "",
+        "operationId" : "informationConsent",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "path",
+          "description" : "Version",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Process-ID",
+          "in" : "header",
+          "description" : "ID of the transaction as determined by the initiating party (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Request-ID",
+          "in" : "header",
+          "description" : "ID of the request (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "PSU-ID",
+          "in" : "header",
+          "description" : "To be used if no OAuth Pre-Step was performed",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "PSU-Corporate-ID",
+          "in" : "header",
+          "description" : "Only used in a corporate context",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Access Token as obtained from Authorization Server",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "signature",
+          "in" : "header",
+          "description" : "A signature of the request by the TPP on application level",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "certificate",
+          "in" : "header",
+          "description" : "The certificate used for signing the request",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Date",
+          "in" : "header",
+          "description" : "Standard https header element for Date and Time",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Request body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/InformationConsentRequest"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "OK, request received",
+            "schema" : {
+              "$ref" : "#/definitions/InformationConsentResponse"
+            }
+          },
+          "400" : {
+            "description" : "(Bad Request) Validation error occured"
+          },
+          "401" : {
+            "description" : "(Unauthorized) Access Token is not valid"
+          }
+        }
+      }
+    },
+    "/{version}/consents/{consent-id}" : {
+      "get" : {
+        "tags" : [ "Consents" ],
+        "summary" : "Get Consent Request (page 56) - returns the content of of an account information consent object",
+        "description" : "",
+        "operationId" : "consentRequest",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "path",
+          "description" : "Version",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "consent-id",
+          "in" : "path",
+          "description" : "Consent ID as received from account information consent",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Process-ID",
+          "in" : "header",
+          "description" : "ID of the transaction as determined by the initiating party (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Request-ID",
+          "in" : "header",
+          "description" : "ID of the request (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "PSU-ID",
+          "in" : "header",
+          "description" : "To be used if no OAuth Pre-Step was performed",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "PSU-Corporate-ID",
+          "in" : "header",
+          "description" : "Only used in a corporate context",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Access Token as obtained from Authorization Server",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "signature",
+          "in" : "header",
+          "description" : "A signature of the request by the TPP on application level",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "certificate",
+          "in" : "header",
+          "description" : "The certificate used for signing the request",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Date",
+          "in" : "header",
+          "description" : "Standard https header element for Date and Time",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK, request received",
+            "schema" : {
+              "$ref" : "#/definitions/ConsentRequestResponse"
+            }
+          },
+          "400" : {
+            "description" : "(Bad Request) Validation error occured"
+          },
+          "401" : {
+            "description" : "(Unauthorized) Access Token is not valid"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Consents" ],
+        "summary" : "Update PSU Data (page 70) - updates the account information consent data by PSU data",
+        "description" : "",
+        "operationId" : "updatePSUData",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "path",
+          "description" : "Version",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "consent-id",
+          "in" : "path",
+          "description" : "Consent ID as received from account information consent",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Process-ID",
+          "in" : "header",
+          "description" : "ID of the transaction as determined by the initiating party (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Request-ID",
+          "in" : "header",
+          "description" : "ID of the request (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "PSU-ID",
+          "in" : "header",
+          "description" : "To be used if no OAuth Pre-Step was performed",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "PSU-Corporate-ID",
+          "in" : "header",
+          "description" : "Only in corporate context",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Access Token as obtained from Authorization Server",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "signature",
+          "in" : "header",
+          "description" : "A signature of the request by the TPP on application level",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "certificate",
+          "in" : "header",
+          "description" : "The certificate used for signing the request",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Date",
+          "in" : "header",
+          "description" : "Standard https header element for Date and Time",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Request body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/UpdatePSUDataRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK, request received",
+            "schema" : {
+              "$ref" : "#/definitions/UpdatePSUDataResponse"
+            }
+          },
+          "400" : {
+            "description" : "(Bad Request) Validation error occured"
+          },
+          "401" : {
+            "description" : "(Unauthorized) Access Token is not valid"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Consents" ],
+        "summary" : "Delete an Account Information Consent Object (page 58) - deletes the consent object",
+        "description" : "",
+        "operationId" : "deleteConsent",
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "path",
+          "description" : "Version",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "consent-id",
+          "in" : "path",
+          "description" : "Consent ID as received from account information consent",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Process-ID",
+          "in" : "header",
+          "description" : "ID of the transaction as determined by the initiating party (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Request-ID",
+          "in" : "header",
+          "description" : "ID of the request (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Access Token as obtained from Authorization Server",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "OK, request received"
+          },
+          "400" : {
+            "description" : "(Bad Request) Validation error occured"
+          },
+          "401" : {
+            "description" : "(Unauthorized) Access Token is not valid"
+          }
+        }
+      }
+    },
+    "/{version}/consents/{consent-id}/status" : {
+      "get" : {
+        "tags" : [ "Consents" ],
+        "summary" : "Get Status Request (page 55) - reads the transaction status of the addressed consent resource",
+        "description" : "",
+        "operationId" : "statusRequest",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "path",
+          "description" : "Version",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "consent-id",
+          "in" : "path",
+          "description" : "Consent ID as received from account information consent",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Process-ID",
+          "in" : "header",
+          "description" : "ID of the transaction as determined by the initiating party (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Request-ID",
+          "in" : "header",
+          "description" : "ID of the request (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "PSU-ID",
+          "in" : "header",
+          "description" : "To be used if no OAuth Pre-Step was performed",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "PSU-Corporate-ID",
+          "in" : "header",
+          "description" : "Only used in a corporate context",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Access Token as obtained from Authorization Server",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "signature",
+          "in" : "header",
+          "description" : "A signature of the request by the TPP on application level",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "certificate",
+          "in" : "header",
+          "description" : "The certificate used for signing the request",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Date",
+          "in" : "header",
+          "description" : "Standard https header element for Date and Time",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK, request received",
+            "schema" : {
+              "$ref" : "#/definitions/StatusResponse"
+            }
+          },
+          "400" : {
+            "description" : "(Bad Request) Validation error occured"
+          },
+          "401" : {
+            "description" : "(Unauthorized) Access Token is not valid"
+          }
+        }
+      }
+    },
+    "/{version}/payments/{payment-product}" : {
+      "post" : {
+        "tags" : [ "Payments" ],
+        "summary" : "Payment Initiation Request (page 25) - creates a payment initiation request at the ASPSP",
+        "description" : "",
+        "operationId" : "paymentInitiationRequest",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "path",
+          "description" : "Version",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "payment-product",
+          "in" : "path",
+          "description" : "sepa-credit-transfers / instant-sepa-credit-transfers / target-2-payments / cross-border-credit-transfers",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Process-ID",
+          "in" : "header",
+          "description" : "ID of the transaction as determined by the initiating party (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Request-ID",
+          "in" : "header",
+          "description" : "ID of the request (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "PSU-ID",
+          "in" : "header",
+          "description" : "To be used if no OAuth Pre-Step was performed",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "PSU-Corporate-ID",
+          "in" : "header",
+          "description" : "Only used in a corporate context",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Access Token as obtained from Authorization Server",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Consent-ID",
+          "in" : "header",
+          "description" : "May be contained, if the payment initiation transaction is part of a combined AIS/PIS service",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "PSU-Agent",
+          "in" : "header",
+          "description" : "The forwarded Agent header field of the http request between PSU and TPP",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "PSU-IP-Address",
+          "in" : "header",
+          "description" : "The forwarded IP Address header field consists of the corresponding http request IP Address between PSU and TPP",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "PSU-Geo-Location",
+          "in" : "header",
+          "description" : "The forwarded Geo Location header field of the corresponding http request between PSU and TPP if available",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "signature",
+          "in" : "header",
+          "description" : "A signature of the request by the TPP on application level",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "certificate",
+          "in" : "header",
+          "description" : "The certificate used for signing the request",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Date",
+          "in" : "header",
+          "description" : "Standard https header element for Date and Time",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Request body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/PaymentInitiationRequest"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "OK, request received",
+            "schema" : {
+              "$ref" : "#/definitions/PaymentInitiationResponse"
+            }
+          },
+          "400" : {
+            "description" : "(Bad Request) Validation error occured"
+          },
+          "401" : {
+            "description" : "(Unauthorized) Access Token is not valid"
+          }
+        }
+      }
+    },
+    "/{version}/payments/{payment-product}/{payment-id}" : {
+      "get" : {
+        "tags" : [ "Payments" ],
+        "summary" : "Read Payment Data (page ?) - reads the details of an initiated payment",
+        "description" : "",
+        "operationId" : "readData",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "path",
+          "description" : "Version",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "payment-product",
+          "in" : "path",
+          "description" : "sepa-credit-transfers / instant-sepa-credit-transfers / target-2-payments / cross-border-credit-transfers",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "payment-id",
+          "in" : "path",
+          "description" : "Payment ID as received from the Payment Initiation",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Process-ID",
+          "in" : "header",
+          "description" : "ID of the transaction as determined by the initiating party (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Request-ID",
+          "in" : "header",
+          "description" : "ID of the request (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Access Token as obtained from Authorization Server",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "signature",
+          "in" : "header",
+          "description" : "A signature of the request by the TPP on application level",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "certificate",
+          "in" : "header",
+          "description" : "The certificate used for signing the request",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Date",
+          "in" : "header",
+          "description" : "Standard https header element for Date and Time",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK, request received",
+            "schema" : {
+              "$ref" : "#/definitions/PaymentInitiationResponse"
+            }
+          },
+          "400" : {
+            "description" : "(Bad Request) Validation error occured"
+          },
+          "401" : {
+            "description" : "(Unauthorized) Access Token is not valid"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Payments" ],
+        "summary" : "Update PSU data (page 70) - updates the payment initiation data by PSU data",
+        "description" : "",
+        "operationId" : "updatePSUData",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "path",
+          "description" : "Version",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "payment-product",
+          "in" : "path",
+          "description" : "sepa-credit-transfers / instant-sepa-credit-transfers / target-2-payments / cross-border-credit-transfers",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "payment-id",
+          "in" : "path",
+          "description" : "Payment ID as received from the Payment Initiation",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Process-ID",
+          "in" : "header",
+          "description" : "ID of the transaction as determined by the initiating party (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Request-ID",
+          "in" : "header",
+          "description" : "ID of the request (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "PSU-ID",
+          "in" : "header",
+          "description" : "To be used if no OAuth Pre-Step was performed",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "PSU-Corporate-ID",
+          "in" : "header",
+          "description" : "Only in corporate context",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Access Token as obtained from Authorization Server",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "signature",
+          "in" : "header",
+          "description" : "A signature of the request by the TPP on application level",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "certificate",
+          "in" : "header",
+          "description" : "The certificate used for signing the request",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Date",
+          "in" : "header",
+          "description" : "Standard https header element for Date and Time",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Request body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/UpdatePSUDataRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK, request received",
+            "schema" : {
+              "$ref" : "#/definitions/UpdatePSUDataResponse"
+            }
+          },
+          "400" : {
+            "description" : "(Bad Request) Validation error occured"
+          },
+          "401" : {
+            "description" : "(Unauthorized) Access Token is not valid"
+          }
+        }
+      }
+    },
+    "/{version}/payments/{payment-product}/{payment-id}/status" : {
+      "get" : {
+        "tags" : [ "Payments" ],
+        "summary" : "Get Status Request (page 33) - check the status of the payment initiation",
+        "description" : "",
+        "operationId" : "statusRequest",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "path",
+          "description" : "Version",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "payment-product",
+          "in" : "path",
+          "description" : "sepa-credit-transfers / instant-sepa-credit-transfers / target-2-payments / cross-border-credit-transfers",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "payment-id",
+          "in" : "path",
+          "description" : "Payment ID as received from the Payment Initiation",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Process-ID",
+          "in" : "header",
+          "description" : "ID of the transaction as determined by the initiating party (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Request-ID",
+          "in" : "header",
+          "description" : "ID of the request (UUID)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "PSU-ID",
+          "in" : "header",
+          "description" : "To be used if no OAuth Pre-Step was performed",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Access Token as obtained from Authorization Server",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "signature",
+          "in" : "header",
+          "description" : "A signature of the request by the TPP on application level",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "certificate",
+          "in" : "header",
+          "description" : "The certificate used for signing the request",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Date",
+          "in" : "header",
+          "description" : "Standard https header element for Date and Time",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK, request received",
+            "schema" : {
+              "$ref" : "#/definitions/StatusResponse"
+            }
+          },
+          "400" : {
+            "description" : "(Bad Request) Validation error occured"
+          },
+          "401" : {
+            "description" : "(Unauthorized) Access Token is not valid"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Account" : {
+      "type" : "object",
+      "required" : [ "currency", "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "3dc3d5b3-7023-4848-9853-f5400a64e80f",
+          "description" : "Id of account"
+        },
+        "iban" : {
+          "type" : "string",
+          "example" : "DE2310010010123456789",
+          "description" : "IBAN"
+        },
+        "bban" : {
+          "type" : "string",
+          "description" : "id for payment account without IBAN"
+        },
+        "pan" : {
+          "type" : "string",
+          "example" : "1234567890-12345",
+          "description" : "Primary Account Number of a card"
+        },
+        "msisdn" : {
+          "type" : "string",
+          "description" : "An alias to access a payment account via a registered mobile phone number"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Name given by the bank or the PSU in online banking"
+        },
+        "account_type" : {
+          "type" : "string",
+          "example" : "US dollar account",
+          "description" : "Type of account"
+        },
+        "bic" : {
+          "type" : "string",
+          "description" : "The BIC associated to the account"
+        },
+        "balances" : {
+          "type" : "string",
+          "description" : "Balances"
+        },
+        "currency" : {
+          "type" : "string",
+          "example" : "EUR",
+          "description" : "account currency"
+        },
+        "_links" : {
+          "example" : "/v1/accounts/3dc3d5b3-7023-4848-9853-f5400a64e81g/balances",
+          "description" : "Links to balances or transactions",
+          "$ref" : "#/definitions/Links"
+        }
+      },
+      "description" : "Account details"
+    },
+    "AccountAccount" : {
+      "type" : "object",
+      "properties" : {
+        "iban" : {
+          "type" : "string",
+          "example" : "DE2310010010123456789",
+          "description" : "IBAN"
+        },
+        "bban" : {
+          "type" : "string",
+          "description" : "id for payment account without IBAN"
+        },
+        "pan" : {
+          "type" : "string",
+          "example" : "1234567890-12345",
+          "description" : "Primary Account Number of a card"
+        },
+        "msisdn" : {
+          "type" : "string",
+          "description" : "An alias to access a payment account via a registered mobile phone number"
+        }
+      }
+    },
+    "AccountAmount" : {
+      "type" : "object",
+      "required" : [ "content", "currency" ],
+      "properties" : {
+        "currency" : {
+          "type" : "string",
+          "example" : "EUR",
+          "description" : "Abbreviation for currency"
+        },
+        "content" : {
+          "type" : "string",
+          "example" : "-100,00",
+          "description" : "Amount"
+        }
+      }
+    },
+    "AccountBalance" : {
+      "type" : "object",
+      "properties" : {
+        "booked" : {
+          "description" : "Last known book balance of the account",
+          "$ref" : "#/definitions/AccountBalanceInf"
+        },
+        "expected" : {
+          "description" : "Balanced composed of booked entries and pending items",
+          "$ref" : "#/definitions/AccountBalanceInf"
+        },
+        "authorised" : {
+          "description" : "The expected balance together with the value of a pre-approved permanently available credit line",
+          "$ref" : "#/definitions/AccountBalanceInf"
+        },
+        "opening_booked" : {
+          "description" : "Balance at the beginning of the reporting period",
+          "$ref" : "#/definitions/AccountBalanceInf"
+        },
+        "closing_booked" : {
+          "description" : "Balance at the end of the pre-agreed reporting period",
+          "$ref" : "#/definitions/AccountBalanceInf"
+        },
+        "interim_available" : {
+          "description" : "Calculated on the basis of booked credit and debit items",
+          "$ref" : "#/definitions/AccountBalanceInf"
+        }
+      }
+    },
+    "AccountBalanceInf" : {
+      "type" : "object",
+      "required" : [ "amount" ],
+      "properties" : {
+        "amount" : {
+          "description" : "Amount and currency for balance for",
+          "$ref" : "#/definitions/AccountAmount"
+        },
+        "last_action_date_time" : {
+          "type" : "string"
+        },
+        "date" : {
+          "type" : "string",
+          "example" : "2017-11-01",
+          "description" : "Date for last actualization"
+        }
+      }
+    },
+    "AccountBalanceResponse" : {
+      "type" : "object",
+      "properties" : {
+        "balances" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/AccountBalance"
+          }
+        }
+      },
+      "description" : "Response for /{version}/accounts/{account-id}/balances request"
+    },
+    "AccountName" : {
+      "type" : "object",
+      "required" : [ "name" ],
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "example" : "Merchant123",
+          "description" : "Name of account owner"
+        }
+      }
+    },
+    "AccountResponse" : {
+      "type" : "object",
+      "required" : [ "accounts" ],
+      "properties" : {
+        "accounts" : {
+          "type" : "array",
+          "description" : "List of accounts",
+          "items" : {
+            "$ref" : "#/definitions/Account"
+          }
+        }
+      },
+      "description" : "Response for /{version}/accounts request"
+    },
+    "AccountTransaction" : {
+      "type" : "object",
+      "required" : [ "amount", "booking_date", "remittance_information_unstructured", "transaction_id", "value_date" ],
+      "properties" : {
+        "transaction_id" : {
+          "type" : "string",
+          "example" : "1234567",
+          "description" : "ID for transaction"
+        },
+        "creditor_name" : {
+          "type" : "string",
+          "example" : "John Miles",
+          "description" : "Creditor name"
+        },
+        "creditor_account" : {
+          "description" : "Creditor account",
+          "$ref" : "#/definitions/AccountAccount"
+        },
+        "debtor_name" : {
+          "type" : "string",
+          "example" : "Paul Simpson",
+          "description" : "Debtor name"
+        },
+        "debtor_account" : {
+          "description" : "Debtor account",
+          "$ref" : "#/definitions/AccountAccount"
+        },
+        "amount" : {
+          "description" : "Amount",
+          "$ref" : "#/definitions/AccountAmount"
+        },
+        "booking_date" : {
+          "type" : "string",
+          "example" : "2017-10-25",
+          "description" : "Booking date"
+        },
+        "value_date" : {
+          "type" : "string",
+          "example" : "2017-10-26",
+          "description" : "Value date"
+        },
+        "remittance_information_unstructured" : {
+          "type" : "string",
+          "example" : "Example for Remittance Information",
+          "description" : "Remittance information"
+        }
+      }
+    },
+    "AccountTransactions" : {
+      "type" : "object",
+      "required" : [ "_links", "booked" ],
+      "properties" : {
+        "booked" : {
+          "type" : "array",
+          "description" : "transactions consider closed bookings",
+          "items" : {
+            "$ref" : "#/definitions/AccountTransaction"
+          }
+        },
+        "pending" : {
+          "type" : "array",
+          "description" : "transactions consider planned bookings",
+          "items" : {
+            "$ref" : "#/definitions/AccountTransaction"
+          }
+        },
+        "_links" : {
+          "description" : "account_link / first_page_link / ... / last_page_link",
+          "$ref" : "#/definitions/Links"
+        }
+      }
+    },
+    "AccountTransactionsResponse" : {
+      "type" : "object",
+      "properties" : {
+        "transactions" : {
+          "$ref" : "#/definitions/AccountTransactions"
+        }
+      },
+      "description" : "Response for /{version}/accounts/{account-id}/transactions request"
+    },
+    "AuthenticationChallengeData" : {
+      "type" : "object",
+      "properties" : {
+        "image" : {
+          "type" : "string",
+          "description" : "PNG data to be displayed to the PSU"
+        },
+        "otp_max_length" : {
+          "type" : "string",
+          "example" : "6",
+          "description" : "The maximal length for the OTP to be typed in by PSU"
+        },
+        "otp_format" : {
+          "type" : "string",
+          "example" : "integer",
+          "description" : "The format type of the OTP to be typed in"
+        },
+        "additional_information" : {
+          "type" : "string",
+          "description" : "Additional explanation for the PSU"
+        }
+      }
+    },
+    "AuthenticationMethod" : {
+      "type" : "object",
+      "required" : [ "authentication_method_id", "authentication_type" ],
+      "properties" : {
+        "authentication_type" : {
+          "type" : "string",
+          "example" : "SMS_OTP",
+          "description" : "Authentication Type"
+        },
+        "authentication_method_id" : {
+          "type" : "string",
+          "example" : "myAuthenticationID",
+          "description" : "Authentication Method Id"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Name of the Authentication Method"
+        },
+        "explanation" : {
+          "type" : "string",
+          "description" : "Detailed information about Authentication Method"
+        }
+      }
+    },
+    "ConfirmationOfFundsRequest" : {
+      "type" : "object",
+      "required" : [ "instructed_amount", "psu_account" ],
+      "properties" : {
+        "card_number" : {
+          "type" : "string",
+          "description" : "Card Number of the card issued by the PIISP"
+        },
+        "psu_account" : {
+          "type" : "string",
+          "description" : "PSU's account number"
+        },
+        "payee" : {
+          "type" : "string",
+          "example" : "Merchant123",
+          "description" : "The merchant where the card is accepted as an information to the PSU"
+        },
+        "instructed_amount" : {
+          "description" : "Transaction amount to be checked within the funds check mechanism",
+          "$ref" : "#/definitions/AccountAmount"
+        }
+      }
+    },
+    "ConfirmationOfFundsResponse" : {
+      "type" : "object",
+      "properties" : {
+        "tpp_message" : {
+          "description" : "Message to the PSU",
+          "$ref" : "#/definitions/TppMessages"
+        }
+      }
+    },
+    "ConsentAccessAccount" : {
+      "type" : "object",
+      "required" : [ "access", "iban", "pan" ],
+      "properties" : {
+        "iban" : {
+          "type" : "string",
+          "example" : "DE2310010010123456789",
+          "description" : "Iban (either Iban or pan must be sent)"
+        },
+        "pan" : {
+          "type" : "string",
+          "example" : "1234567890-12345",
+          "description" : "Pan (either Iban or pan must be sent)"
+        },
+        "access" : {
+          "type" : "array",
+          "example" : "balance",
+          "description" : "Access type",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "ConsentRequestResponse" : {
+      "type" : "object",
+      "required" : [ "access_accounts", "consent_status", "frequency_per_day", "recurring_indicator", "transaction_status", "valid_until" ],
+      "properties" : {
+        "access_accounts" : {
+          "type" : "array",
+          "description" : "List of accounts to be accessed",
+          "items" : {
+            "$ref" : "#/definitions/ConsentAccessAccount"
+          }
+        },
+        "recurring_indicator" : {
+          "type" : "boolean",
+          "example" : true,
+          "description" : "\"true\" if the consent is for requring access"
+        },
+        "valid_until" : {
+          "type" : "string",
+          "example" : "2017-10-30",
+          "description" : "Valid until date for the requested consent"
+        },
+        "frequency_per_day" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 4,
+          "description" : "Maximum frequency for an access per day"
+        },
+        "transaction_status" : {
+          "type" : "string",
+          "example" : "AcceptedTechnicalValidation",
+          "description" : "Transaction status"
+        },
+        "consent_status" : {
+          "type" : "string",
+          "example" : "valid",
+          "description" : "Only permitted: empty|valid|blocked|expired|deleted"
+        }
+      }
+    },
+    "InformationConsentRequest" : {
+      "type" : "object",
+      "required" : [ "access_accounts", "combined_service_indicator", "frequency_per_day", "recurring_indicator", "valid_until" ],
+      "properties" : {
+        "access_accounts" : {
+          "type" : "array",
+          "description" : "List of accounts to be accessed",
+          "items" : {
+            "$ref" : "#/definitions/ConsentAccessAccount"
+          }
+        },
+        "recurring_indicator" : {
+          "type" : "boolean",
+          "example" : true,
+          "description" : "\"true\" if the consent is for requring access"
+        },
+        "valid_until" : {
+          "type" : "string",
+          "example" : "2017-10-30",
+          "description" : "Valid until date for the requested consent"
+        },
+        "frequency_per_day" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 4,
+          "description" : "Maximum frequency for an access per day"
+        },
+        "combined_service_indicator" : {
+          "type" : "boolean",
+          "example" : false,
+          "description" : "\"true\": a payment initiation service will be address in the same \"session\""
+        }
+      }
+    },
+    "InformationConsentResponse" : {
+      "type" : "object",
+      "required" : [ "_links" ],
+      "properties" : {
+        "sca_methods" : {
+          "type" : "array",
+          "description" : "name or names of autheticated methods",
+          "items" : {
+            "$ref" : "#/definitions/AuthenticationMethod"
+          }
+        },
+        "chosen_sca_method" : {
+          "description" : "name of chosen method",
+          "$ref" : "#/definitions/AuthenticationMethod"
+        },
+        "sca_chalenge_data" : {
+          "description" : "Extended information to chosen_sca_method",
+          "$ref" : "#/definitions/AuthenticationChallengeData"
+        },
+        "transaction_status" : {
+          "type" : "string",
+          "description" : "Status"
+        },
+        "psu_message" : {
+          "type" : "string",
+          "description" : "Text to be displayed to the PSU"
+        },
+        "_links" : {
+          "description" : "Link to (PUT) Update PSU Ddata / (GET) Consent Request",
+          "$ref" : "#/definitions/Links"
+        }
+      }
+    },
+    "Links" : {
+      "type" : "object",
+      "properties" : {
+        "self" : {
+          "type" : "string",
+          "description" : "Link to self"
+        },
+        "redirect" : {
+          "type" : "string",
+          "description" : "In case of an SCA Redirect Approach - the redirect link"
+        },
+        "update_psu_identification" : {
+          "type" : "string",
+          "description" : "Link to Update PSU Identification"
+        },
+        "update_psu_authentication" : {
+          "type" : "string",
+          "description" : "Link to Update PSU Authetication (mandatory if SCA approach is 'Embedded')"
+        },
+        "select_authentication_method" : {
+          "type" : "string",
+          "description" : "Link to resource where TPP can select authentication method"
+        },
+        "authorise_transaction" : {
+          "type" : "string",
+          "description" : "Link to resource where TPP can send 'Transaction Authorisation Request'"
+        },
+        "account_link" : {
+          "type" : "string",
+          "description" : "Link to an accounts/.../transactions"
+        },
+        "balances" : {
+          "type" : "string",
+          "example" : "/v1/accounts/3dc3d5b3-7023-4848-9853-f5400a64e80f/balances",
+          "description" : "Link to balances of account is to return"
+        },
+        "transaction" : {
+          "type" : "string",
+          "example" : "/v1/accounts/3dc3d5b3-7023-4848-9853-f5400a64e80f/transactions",
+          "description" : "Link to transactions of account is to return"
+        },
+        "status" : {
+          "type" : "string",
+          "description" : "Link to Status"
+        },
+        "first_page_link" : {
+          "type" : "string",
+          "description" : "Navigation link for accounts reports"
+        },
+        "second_page_link" : {
+          "type" : "string",
+          "description" : "Navigation link for accounts reports"
+        },
+        "current_page_link" : {
+          "type" : "string",
+          "description" : "Navigation link for accounts reports"
+        },
+        "last_page_link" : {
+          "type" : "string",
+          "description" : "Navigation link for accounts reports"
+        }
+      }
+    },
+    "PSUData" : {
+      "type" : "object",
+      "properties" : {
+        "password" : {
+          "type" : "string",
+          "description" : "PSU password for Update PSU Data (Authentication)"
+        }
+      }
+    },
+    "PaymentInitiationRequest" : {
+      "type" : "object",
+      "required" : [ "creditor", "creditor_account", "debtor_account", "instructed_amount" ],
+      "properties" : {
+        "instructed_amount" : {
+          "description" : "currency and amount",
+          "$ref" : "#/definitions/AccountAmount"
+        },
+        "debtor_account" : {
+          "description" : "Debtor account",
+          "$ref" : "#/definitions/AccountAccount"
+        },
+        "creditor" : {
+          "example" : "Merchant123",
+          "description" : "Creditor name",
+          "$ref" : "#/definitions/AccountName"
+        },
+        "creditor_account" : {
+          "description" : "Creditor account",
+          "$ref" : "#/definitions/AccountAccount"
+        },
+        "remittance_information_structured" : {
+          "type" : "string",
+          "example" : "false",
+          "description" : "\"true\": a payment initiation service will be address in the same \"session\""
+        }
+      }
+    },
+    "PaymentInitiationResponse" : {
+      "type" : "object",
+      "required" : [ "_links", "transaction_status" ],
+      "properties" : {
+        "sca_methods" : {
+          "type" : "array",
+          "description" : "name or names of autheticated methods",
+          "items" : {
+            "$ref" : "#/definitions/AuthenticationMethod"
+          }
+        },
+        "chosen_sca_method" : {
+          "description" : "name of chosen method",
+          "$ref" : "#/definitions/AuthenticationMethod"
+        },
+        "sca_chalenge_data" : {
+          "description" : "Extended information to chosen_sca_method",
+          "$ref" : "#/definitions/AuthenticationChallengeData"
+        },
+        "transaction_status" : {
+          "type" : "string",
+          "description" : "Status"
+        },
+        "psu_message" : {
+          "type" : "string",
+          "description" : "Text to be displayed to the PSU"
+        },
+        "_links" : {
+          "description" : "Link to (PUT) Update PSU Ddata / (GET) Consent Request",
+          "$ref" : "#/definitions/Links"
+        },
+        "tpp_messages" : {
+          "$ref" : "#/definitions/TppMessages"
+        }
+      }
+    },
+    "StatusResponse" : {
+      "type" : "object",
+      "required" : [ "transaction_status" ],
+      "properties" : {
+        "transaction_status" : {
+          "type" : "string",
+          "description" : "Status"
+        }
+      }
+    },
+    "TppMessages" : {
+      "type" : "object",
+      "required" : [ "category", "code", "text" ],
+      "properties" : {
+        "category" : {
+          "type" : "string",
+          "example" : "ERROR",
+          "description" : "Mesage category"
+        },
+        "code" : {
+          "type" : "string",
+          "example" : "TOKEN_MISSING",
+          "description" : "Message code"
+        },
+        "text" : {
+          "type" : "string",
+          "example" : "additional text information of the ASPSP",
+          "description" : "Message text"
+        }
+      }
+    },
+    "UpdatePSUDataRequest" : {
+      "type" : "object",
+      "properties" : {
+        "authentication_method_id" : {
+          "type" : "string",
+          "description" : "authentication method id for Update PSU Data (Authentication Method)"
+        },
+        "psu_data" : {
+          "description" : "PSU Data for Update PSU Data (Authentication)",
+          "$ref" : "#/definitions/PSUData"
+        },
+        "sca_authentication_data" : {
+          "type" : "string",
+          "description" : "sca_authentication_data - for Authorise Request"
+        }
+      },
+      "description" : "Update PSU Data Request"
+    },
+    "UpdatePSUDataResponse" : {
+      "type" : "object",
+      "required" : [ "_links", "transaction_status" ],
+      "properties" : {
+        "sca_methods" : {
+          "type" : "array",
+          "description" : "name or names of autheticated methods",
+          "items" : {
+            "$ref" : "#/definitions/AuthenticationMethod"
+          }
+        },
+        "chosen_sca_method" : {
+          "description" : "name of chosen method",
+          "$ref" : "#/definitions/AuthenticationMethod"
+        },
+        "sca_chalenge_data" : {
+          "description" : "Extended information to chosen_sca_method",
+          "$ref" : "#/definitions/AuthenticationChallengeData"
+        },
+        "transaction_status" : {
+          "type" : "string",
+          "description" : "Status"
+        },
+        "psu_message" : {
+          "type" : "string",
+          "description" : "Text to be displayed to the PSU"
+        },
+        "_links" : {
+          "description" : "Links",
+          "$ref" : "#/definitions/Links"
+        }
+      }
+    }
+  }
+}

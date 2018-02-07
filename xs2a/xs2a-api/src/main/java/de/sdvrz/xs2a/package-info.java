@@ -1,8 +1,4 @@
 /**
- * 
- */
-/**
- * @author u000329
- *
+ * TODO Jungs...hier muss was hin
  */
 package de.sdvrz.xs2a;

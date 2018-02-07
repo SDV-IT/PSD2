@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,10 @@ import org.slf4j.LoggerFactory;
 @WebFilter("/*")
 public class PropertyWebFilter implements Filter
 {   
-   private static final Logger LOG = LoggerFactory.getLogger(PropertyWebFilter.class);
-
    @Override
    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException,
          IOException
    {
-      LOG.debug("doFilter() Start");
       request.setCharacterEncoding("UTF-8");
       ((HttpServletResponse)response).setDateHeader("Expires", System.currentTimeMillis() + 604800000L);
       ((HttpServletResponse)response).setHeader("Pragma", null);

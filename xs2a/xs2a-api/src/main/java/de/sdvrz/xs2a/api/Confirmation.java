@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,21 +62,21 @@ public interface Confirmation {
 			@ApiResponse(code = 400, message = "(Bad Request) Validation error occured"),
 			@ApiResponse(code = 401, message = "(Unauthorized) Access Token is not valid"),
 			@ApiResponse(code = 406, message = "(Not Acceptable) ? - not documented but necessary hier") })
-	public Response confirmationOfFunds(
+	Response confirmationOfFunds(
 			@ApiParam(value = "Version") @PathParam("version") String version,
 			@ApiParam(value = "Provider Identification") @PathParam("provider-id") String providerId,
-			@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true) 
-				@HeaderParam("Process-ID") String processId, 
+			@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true)
+			@HeaderParam("Process-ID") String processId,
 			@ApiParam(value = "ID of the request (UUID)", required = true)
-				@HeaderParam("Request-ID") String requestId,				
+			@HeaderParam("Request-ID") String requestId,
 			@ApiParam(value = "A signature of the request by the TPP on application level", required = false)
-				@HeaderParam("signature") String signature,	
+			@HeaderParam("signature") String signature,
 			@ApiParam(value = "The certificate used for signing the request", required = false)
-				@HeaderParam("certificate") String certificate,
+			@HeaderParam("certificate") String certificate,
 			@ApiParam(value = "Standard https header element for Date and Time", required = true)
-				@HeaderParam("Date") String date,
+			@HeaderParam("Date") String date,
 			@ApiParam(value = "Request body", required = true)
-				ConfirmationOfFundsRequest confirmationOfFundsRequest);
+					ConfirmationOfFundsRequest confirmationOfFundsRequest);
 
 	
 }

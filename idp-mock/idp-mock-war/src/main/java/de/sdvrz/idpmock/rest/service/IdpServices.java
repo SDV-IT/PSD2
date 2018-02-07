@@ -80,8 +80,6 @@ public class IdpServices {
 			@QueryParam("state") String state,
 			@Context HttpServletRequest request) {
 		
-		LOG.debug("authorize() Start scope: {}, responseType: {}, redirectUri: {}, clientId: {}, bic: {}, state: {}", scope, responseType, redirectUri, clientId, bic, state);
-				
 		// Parameter validation
 		if (scope == null
 				|| scope.length() <= 0) {
@@ -180,8 +178,6 @@ public class IdpServices {
 			@HeaderParam("Authorization") String authorization,
 			@Context HttpServletRequest request) {
 		
-		LOG.debug("token() Start grantType: {}, redirectUri: {}, code: {}, refreshToken: {}, clientId: {}, clientSecret: {}, authorization: {}", grantType, redirectUri, code, refreshToken, clientId, clientSecret, authorization);
-		
 		// Obtain header parameter: authorization for clientId and clientSecret
 		if (authorization != null
 				&& authorization.length() > 0) {
@@ -271,8 +267,6 @@ public class IdpServices {
 	 */
 	private Response redirectToErrorPage(String oauthErrorCode, String oauthErrorMsg) {
 		
-		LOG.debug("redirectToErrorPage() Start oauthErrorCode: {}, oauthErrorMsg: {}", oauthErrorCode, oauthErrorMsg);
-		
 		URI location = null;
 		try {
 			location = new URI(String.format("/authorize/error.xhtml?oauthErrorCode=%s&oauthErrorMsg=%s", oauthErrorCode, oauthErrorMsg));
@@ -291,7 +285,6 @@ public class IdpServices {
 	 */
 	private Response returnAccessToken(ClientModel clientModel) {
 		
-		LOG.debug("returnAccessToken() Start ");
 		clientModel.setAuthorizationCode("");
 		clientModel.setRefreshCode(Helper.generateCode());
 		clientModel.setTokenType("Bearer");
@@ -318,8 +311,6 @@ public class IdpServices {
 	 * @return Response with error
 	 */
 	private Response returnError(Status status, String error, String errorDescription) {
-		
-		LOG.debug("returnError() Start status: {}, error: {}, errorDescription: {}", status, error, errorDescription);				
 		
 		// Response model
 		TokenModel tokenModel = new TokenModel();

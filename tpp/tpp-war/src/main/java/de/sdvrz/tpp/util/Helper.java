@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,8 +45,6 @@ public class Helper {
 	 * makes all certificates trusted
 	 */
 	public static void trustAllCertificatesCheck() {
-		LOG.debug("trustAllCertificatesCheck() Start");
-
 		LOG.warn("trustAllCertificatesCheck() It will be trusted to all certificates");
 		try {
 			TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
@@ -70,24 +68,17 @@ public class Helper {
 			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 
 			// Create all-trusting host name verifier
-			HostnameVerifier allHostsValid = new HostnameVerifier() {
-				@Override
-				public boolean verify(String hostname, SSLSession session) {
-					return true;
-				}
-			};
+			HostnameVerifier allHostsValid = (hostname, session) -> true;
 
 			// Install the all-trusting host verifier
 			HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
 		} catch (NoSuchAlgorithmException e) {
-			LOG.error("trustAllCertificatesCheck() NoSuchAlgorithmException: {}", e.getMessage());
+			LOG.error("NoSuchAlgorithmException: {}", e);
 		} catch (KeyManagementException e) {
-			LOG.error("trustAllCertificatesCheck() KeyManagementException: {}", e.getMessage());
+			LOG.error("KeyManagementException: {}", e);
 		} catch (Exception e) {
-			LOG.error("trustAllCertificatesCheck() {}: {}", e.getClass().getSimpleName(), e.getMessage());
+			LOG.error("Error", e);
 		}
-
-		LOG.debug("trustAllCertificatesCheck() End");
 	}
 
 	/**
@@ -96,7 +87,6 @@ public class Helper {
 	 * @return Date/Time
 	 */
 	public static String GetHttpHeaderDate() {
-
 		Calendar calendar = Calendar.getInstance();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
 		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
@@ -64,15 +64,13 @@ public class PaymentsClient {
    * perform Payment Initiation
    */
   public void paymentInitiation() {
-    LOG.debug("paymentInitiation() Start");
-
     viewModel.setHttpDataFlow(new StringBuilder());
     xs2aModel.setProcessUUID(UUID.randomUUID());
 
     Map<String, Object> response = paymentInitiationRequest();
 
     if ((int) response.get(Xs2aRestCommunicator.HTTP_CODE_KEY) != HttpURLConnection.HTTP_CREATED) {
-      LOG.error("paymentInitiation() End Error: Payment Initiation Request");
+      LOG.error("Error: Payment Initiation Request");
       return;
     }
 
@@ -105,7 +103,7 @@ public class PaymentsClient {
       } else if (pathToAuthoriseTransaction != null && pathToAuthoriseTransaction.length() > 0) {
         response = updatePSUData(pathToAuthoriseTransaction, "AUTHORISATION", authenticationMethodList);        
       } else {
-        LOG.error("paymentInitiation() End Error: No one of expeted links received ");
+        LOG.error("Error: No one of expeted links received ");
         return;
       }
 
@@ -116,7 +114,7 @@ public class PaymentsClient {
       if ((int) response.get(Xs2aRestCommunicator.HTTP_CODE_KEY) != HttpURLConnection.HTTP_OK
           || !((UpdatePSUDataResponse) response.get(Xs2aRestCommunicator.OUTPUT_KEY)).getTransaction_status()
               .equals("AcceptedTechnicalValidation")) {
-        LOG.error("paymentInitiation() End Error: HTTP code is not 200 or Transaction_status is not 'AcceptedTechnicalValidation'");
+        LOG.error("Error: HTTP code is not 200 or Transaction_status is not 'AcceptedTechnicalValidation'");
         return;
       }
 
@@ -129,10 +127,8 @@ public class PaymentsClient {
     if ((int) response.get(Xs2aRestCommunicator.HTTP_CODE_KEY) == HttpURLConnection.HTTP_OK
         && ((StatusResponse) response.get(Xs2aRestCommunicator.OUTPUT_KEY)).getTransaction_status()
             .equals("AcceptedCustomerProfile")) {
-      // Do anything fo last response in Payment Initiation chain
+      // Do anything for last response in Payment Initiation chain
     }
-
-    LOG.debug("paymentInitiation() End");
   }
 
   /**
@@ -141,8 +137,6 @@ public class PaymentsClient {
    * @return Map with HTTP Code / body data
    */
   private Map<String, Object> paymentInitiationRequest() {
-    LOG.debug("paymentInitiationRequest() Start");
-
     Map<String, Object> response = null;
     try {
       Map<String, String> requestPropertyMap = new HashMap<>();
@@ -177,9 +171,8 @@ public class PaymentsClient {
           "POST", requestPropertyMap, null, paymentInitiationRequest, PaymentInitiationResponse.class);
 
     } catch (Exception e) {
-      LOG.error("paymentInitiationRequest() {}: {}", e.getClass().getSimpleName(), e.getMessage(), e);
+      LOG.error("Error during communication", e);
     }
-    LOG.debug("paymentInitiationRequest() End response: {}", response);
     return response;
   }
 
@@ -194,8 +187,6 @@ public class PaymentsClient {
    * @return Map with HTTP Code / body data
    */
   private Map<String, Object> updatePSUData(String path, String type, List<AuthenticationMethod> authenticationMethodList) {
-    LOG.debug("updatePSUData() Start path: {}", path);
-
     Map<String, Object> response = null;
     try {
       Map<String, String> requestPropertyMap = new HashMap<>();
@@ -234,7 +225,7 @@ public class PaymentsClient {
         updatePSUDataRequest.setSca_authentication_data("TAN123");;
         updatePsuDataType = " - PSU Authorisation (page 79)";
       } else {
-        LOG.error("updatePSUData() End type specialisation of Update PSU Data not recognized");
+        LOG.error("type specialisation of Update PSU Data not recognized");
         return null;
       }
 
@@ -242,9 +233,8 @@ public class PaymentsClient {
           requestPropertyMap, null, updatePSUDataRequest, UpdatePSUDataResponse.class);
 
     } catch (Exception e) {
-      LOG.error("updatePSUData() {}: {}", e.getClass().getSimpleName(), e.getMessage(), e);
+      LOG.error("Error during communication", e);
     }
-    LOG.debug("updatePSUData() End response: {}", response);
     return response;
   }
 
@@ -256,8 +246,6 @@ public class PaymentsClient {
    * @return Map with HTTP Code / body data
    */
   private Map<String, Object> statusRequest(String path) {
-    LOG.debug("statusRequest() Start path: {}", path);
-
     Map<String, Object> response = null;
     try {
       Map<String, String> requestPropertyMap = new HashMap<>();
@@ -277,9 +265,8 @@ public class PaymentsClient {
           StatusResponse.class);
 
     } catch (Exception e) {
-      LOG.error("statusRequest() {}: {}", e.getClass().getSimpleName(), e.getMessage(), e);
+      LOG.error("Error during communication", e);
     }
-    LOG.debug("statusRequest() End response: {}", response);
     return response;
   }
 

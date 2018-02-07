@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,17 +39,12 @@ import de.sdvrz.xs2a.util.Util;
 @TransactionManagement(TransactionManagementType.BEAN)
 public class ConfirmationImpl implements Confirmation {
 	
-private static final Logger LOG = LoggerFactory.getLogger(ConfirmationImpl.class);
-	
 	@Inject
 	Util util;
 
 	@Override
 	public Response confirmationOfFunds(String version, String providerId, String processId, String requestId, 
 			String signature, String certificate, String date, ConfirmationOfFundsRequest confirmationOfFundsRequest) {
-		
-		LOG.debug("confirmationOfFunds() Start version: {}, providerId: {}, processId: {}, requestId: {}, psuAccount: {}, instructedAmount: {}/{}", version,
-				providerId, processId, requestId, confirmationOfFundsRequest.getPsu_account(), confirmationOfFundsRequest == null ? "null" : confirmationOfFundsRequest.getInstructed_amount().getCurrency(), confirmationOfFundsRequest == null ? "null" : confirmationOfFundsRequest.getInstructed_amount().getContent());		
 		
 		if (!util.checkValidation()) {
 			// HTTP Code: 400

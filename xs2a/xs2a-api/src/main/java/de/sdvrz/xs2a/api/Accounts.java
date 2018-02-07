@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -59,18 +59,18 @@ public interface Accounts {
 		{@ApiResponse(code = 200, message = "OK, accounts returned", response = AccountResponse.class),
 			@ApiResponse(code = 400, message = "(Bad Request) Validation error occured"),
 			@ApiResponse(code = 401, message = "(Unauthorized) Access Token is not valid") })
-	public Response readAccountList(
+	Response readAccountList(
 			@ApiParam(value = "Version") @PathParam("version") String version,
-			@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true) 
-				@HeaderParam("Process-ID") String processId, 
+			@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true)
+			@HeaderParam("Process-ID") String processId,
 			@ApiParam(value = "ID of the request (UUID)", required = true)
-				@HeaderParam("Request-ID") String requestId,
+			@HeaderParam("Request-ID") String requestId,
 			@ApiParam(value = "Shall be contained if Consent Trasaction was performed via this API before", required = false)
-				@HeaderParam("Consent-ID") String consentId,
+			@HeaderParam("Consent-ID") String consentId,
 			@ApiParam(value = "To be used if no OAuth Pre-Step was performed", required = false)
-				@HeaderParam("PSU-ID") String psuId,
+			@HeaderParam("PSU-ID") String psuId,
 			@ApiParam(value = "Access Token as obtained from Authorization Server", required = true)
-				@HeaderParam("Authorization") String accessToken);
+			@HeaderParam("Authorization") String accessToken);
 
 	/**
 	 * For /{account-id}/balances requests
@@ -95,25 +95,25 @@ public interface Accounts {
 		{@ApiResponse(code = 200, message = "OK, balances returned", response = AccountBalanceResponse.class),
 			@ApiResponse(code = 400, message = "(Bad Request) Validation error occured"),
 			@ApiResponse(code = 401, message = "(Unauthorized) Access Token is not valid") })
-	public Response readBalance(
-			@ApiParam(value = "Version") @PathParam("version") String version, 
+	Response readBalance(
+			@ApiParam(value = "Version") @PathParam("version") String version,
 			@ApiParam(value = "Account ID") @PathParam("account-id") String accountId,
-			@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true) 
-				@HeaderParam("Process-ID") String processId, 
+			@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true)
+			@HeaderParam("Process-ID") String processId,
 			@ApiParam(value = "ID of the request (UUID)", required = true)
-				@HeaderParam("Request-ID") String requestId,
+			@HeaderParam("Request-ID") String requestId,
 			@ApiParam(value = "Consent-ID as from Trasaction performed via this API before", required = true)
-				@HeaderParam("Consent-ID") String consentId,
+			@HeaderParam("Consent-ID") String consentId,
 			@ApiParam(value = "To be used if no OAuth Pre-Step was performed", required = false)
-				@HeaderParam("PSU-ID") String psuId,
+			@HeaderParam("PSU-ID") String psuId,
 			@ApiParam(value = "Access Token as obtained from Authorization Server", required = true)
-				@HeaderParam("Authorization") String accessToken,
+			@HeaderParam("Authorization") String accessToken,
 			@ApiParam(value = "A signature of the request by the TPP on application level", required = false)
-				@HeaderParam("signature") String signature,	
+			@HeaderParam("signature") String signature,
 			@ApiParam(value = "The certificate used for signing the request", required = false)
-				@HeaderParam("certificate") String certificate,
+			@HeaderParam("certificate") String certificate,
 			@ApiParam(value = "Standard https header element for Date and Time", required = true)
-				@HeaderParam("Date") String date);
+			@HeaderParam("Date") String date);
 	
 	/**
 	 * For /{account-id}/transactions requests
@@ -140,29 +140,29 @@ public interface Accounts {
 		{@ApiResponse(code = 200, message = "OK, transactions returned", response = AccountTransactionsResponse.class),
 			@ApiResponse(code = 400, message = "(Bad Request) Validation error occured"),
 			@ApiResponse(code = 401, message = "(Unauthorized) Access Token is not valid") })
-	public Response readTransactions(
-			@ApiParam(value = "Version") @PathParam("version") String version, 
+	Response readTransactions(
+			@ApiParam(value = "Version") @PathParam("version") String version,
 			@ApiParam(value = "Account ID") @PathParam("account-id") String accountId,
-			@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true) 
-				@HeaderParam("Process-ID") String processId, 
+			@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true)
+			@HeaderParam("Process-ID") String processId,
 			@ApiParam(value = "ID of the request (UUID)", required = true)
-				@HeaderParam("Request-ID") String requestId,
+			@HeaderParam("Request-ID") String requestId,
 			@ApiParam(value = "Consent-ID as from Trasaction performed via this API before", required = false)
-				@HeaderParam("Consent-ID") String consentId, 
+			@HeaderParam("Consent-ID") String consentId,
 			@ApiParam(value = "To be used if no OAuth Pre-Step was performed", required = false)
-				@HeaderParam("PSU-ID") String psuId,
+			@HeaderParam("PSU-ID") String psuId,
 			@ApiParam(value = "Access Token as obtained from Authorization Server", required = true)
-				@HeaderParam("Authorization") String accessToken,
+			@HeaderParam("Authorization") String accessToken,
 			@ApiParam(value = "A signature of the request by the TPP on application level", required = false)
-				@HeaderParam("signature") String signature,	
+			@HeaderParam("signature") String signature,
 			@ApiParam(value = "The certificate used for signing the request", required = false)
-				@HeaderParam("certificate") String certificate,
+			@HeaderParam("certificate") String certificate,
 			@ApiParam(value = "Standard https header element for Date and Time", required = true)
-				@HeaderParam("Date") String date,
+			@HeaderParam("Date") String date,
 			@ApiParam(value = "Date from", required = true)
-				@QueryParam("date_from") String dateFrom, 
+			@QueryParam("date_from") String dateFrom,
 			@ApiParam(value = "Date to", required = true)
-				@QueryParam("date_to") String dateTo);
+			@QueryParam("date_to") String dateTo);
 
 
 	/**
@@ -191,29 +191,29 @@ public interface Accounts {
 		{@ApiResponse(code = 200, message = "OK, transactions returned", response = AccountTransactionsResponse.class),
 			@ApiResponse(code = 400, message = "(Bad Request) Validation error occured"),
 			@ApiResponse(code = 401, message = "(Unauthorized) Access Token is not valid") })
-	public Response readTransactionsPage(
-			@ApiParam(value = "Version") @PathParam("version") String version, 
+	Response readTransactionsPage(
+			@ApiParam(value = "Version") @PathParam("version") String version,
 			@ApiParam(value = "Account ID") @PathParam("account-id") String accountId,
 			@ApiParam(value = "-- / first /second / current / last") @PathParam("page") String page,
-			@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true) 
-				@HeaderParam("Process-ID") String processId, 
+			@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true)
+			@HeaderParam("Process-ID") String processId,
 			@ApiParam(value = "ID of the request (UUID)", required = true)
-				@HeaderParam("Request-ID") String requestId,
+			@HeaderParam("Request-ID") String requestId,
 			@ApiParam(value = "Consent-ID as from Trasaction performed via this API before", required = false)
-				@HeaderParam("Consent-ID") String consentId, 
+			@HeaderParam("Consent-ID") String consentId,
 			@ApiParam(value = "To be used if no OAuth Pre-Step was performed", required = false)
-				@HeaderParam("PSU-ID") String psuId,
+			@HeaderParam("PSU-ID") String psuId,
 			@ApiParam(value = "Access Token as obtained from Authorization Server", required = true)
-				@HeaderParam("Authorization") String accessToken,
+			@HeaderParam("Authorization") String accessToken,
 			@ApiParam(value = "A signature of the request by the TPP on application level", required = false)
-				@HeaderParam("signature") String signature,	
+			@HeaderParam("signature") String signature,
 			@ApiParam(value = "The certificate used for signing the request", required = false)
-				@HeaderParam("certificate") String certificate,
+			@HeaderParam("certificate") String certificate,
 			@ApiParam(value = "Standard https header element for Date and Time", required = true)
-				@HeaderParam("Date") String date,
+			@HeaderParam("Date") String date,
 			@ApiParam(value = "Date from", required = true)
-				@QueryParam("date_from") String dateFrom, 
+			@QueryParam("date_from") String dateFrom,
 			@ApiParam(value = "Date to", required = true)
-				@QueryParam("date_to") String dateTo);
+			@QueryParam("date_to") String dateTo);
 
 }

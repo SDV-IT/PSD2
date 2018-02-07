@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,8 +40,6 @@ import de.sdvrz.tpp.xs2a.payment.PaymentsClient;
 @ApplicationScoped
 public class MainController {
 
-	private static final Logger LOG = LoggerFactory.getLogger(MainController.class);
-
 	@Inject
 	AuthorizationModel model;
 
@@ -72,16 +70,13 @@ public class MainController {
 	 * 
 	 */
 	public void getAccessToken() {
-		LOG.debug("getAccessToken() Start");
-		
-		accessToken.getAccessToken();		
+		accessToken.getAccessToken();
 	}
 	
 	/**
 	 * Request against XS2A Server: /accounts
 	 */
 	public void accounts() {
-		LOG.debug("accounts() Start");
 		accountsClient.accounts();
 	}
 	
@@ -89,7 +84,6 @@ public class MainController {
 	 * Request against XS2A Server: /accounts/{account-id}/balances
 	 */
 	public void accountsBalances() {
-		LOG.debug("accountsBalances() Start");
 		accountsClient.accountsBalances();
 	}
 	
@@ -97,7 +91,6 @@ public class MainController {
 	 * Request against XS2A Server: /accounts/{account-id}/transactions
 	 */
 	public void accountsTransactions() {
-		LOG.debug("accountsTransactions() Start");
 		accountsClient.accountsTransactions();;
 	}	
 	
@@ -105,7 +98,6 @@ public class MainController {
 	 * Request against XS2A Server: /accounts/{account-id}/transactions
 	 */
 	public void paymentInitiation() {
-		LOG.debug("paymentInitiation() Start");
 		paymentsClient.paymentInitiation();
 	}	
 	
@@ -113,7 +105,6 @@ public class MainController {
 	 * Request against XS2A Server: /confirmation-of-funds
 	 */
 	public void confirmationOfFunds() {
-		LOG.debug("confirmationOfFunds() Start");
 		confirmationClient.confirmationOfFunds();
 	}	
 

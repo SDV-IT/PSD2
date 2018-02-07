@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,8 +62,6 @@ public class ConfirmationClient implements Serializable {
 	 * perform /v1/confirmation-of-funds
 	 */
 	public void confirmationOfFunds() {
-		LOG.debug("confirmationOfFunds() Start");
-
 		viewModel.setHttpDataFlow(new StringBuilder());
 		xs2aModel.setProcessUUID(UUID.randomUUID());
 
@@ -86,10 +84,8 @@ public class ConfirmationClient implements Serializable {
 			xs2aRestCommunicator.sendAndReceive("Confirmation Of Funds Request (page 84)", "/v1/confirmation-of-funds/SDV-TPP", "POST", requestPropertyMap, null, confirmationOfFundsRequest, ConfirmationOfFundsResponse.class);
 
 		} catch (Exception e) {
-			LOG.error("confirmationOfFunds() {}: {}", e.getClass().getSimpleName(), e.getMessage(), e);
+			LOG.error("Error during communication", e);
 		}
-		LOG.debug("confirmationOfFunds() End");
 	}
 
-	
 }

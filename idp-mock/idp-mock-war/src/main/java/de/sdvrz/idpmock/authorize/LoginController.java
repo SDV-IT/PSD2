@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,8 +50,6 @@ public class LoginController {
 	 * Action if PSU logged in. If success - authorization code will be redirected to TPP
 	 */
 	public void login() {
-		
-		LOG.debug("login() Start");		
 		if (loginModel.getScope() == null
 				|| loginModel.getClientId() == null
 				|| dataModel.getScopeClientMap().get(loginModel.getScope()) == null
@@ -82,8 +80,6 @@ public class LoginController {
 	 */
 	public void cancel() {
 		
-		LOG.debug("cancel() Start");
-		
 		if (loginModel.getScope() == null
 				|| loginModel.getClientId() == null
 				|| dataModel.getScopeClientMap().get(loginModel.getScope()) == null
@@ -106,8 +102,6 @@ public class LoginController {
 	 */
 	private void redirectWithError(ClientModel clientModel, String error, String errorDescription) {
 		
-		LOG.debug("redirectWithError() Start error: {}, errorDescription: {}", error, errorDescription);
-		
 		StringBuilder url = new StringBuilder().append(clientModel.getRedirectUri())
 				.append('?').append("error=").append(error);
 		if (errorDescription != null) {
@@ -123,7 +117,7 @@ public class LoginController {
 		try {			
 			ec.redirect(url.toString());
 		} catch (Exception e) {
-			LOG.error("redirectWithError() {}: {}", e.getClass().getSimpleName(), e.getMessage());
+			LOG.error("Error during redirect to '{}'", url, e);
 		}		
 	}
 	
@@ -134,8 +128,6 @@ public class LoginController {
 	 * @param errorDescription Error description
 	 */
 	private void redirectToErrorPage(String error, String errorDescription) {
-		
-		LOG.debug("redirectToErrorPage() Start error: {}, errorDescription: {}", error, errorDescription);
 		
 		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
 		
@@ -157,7 +149,7 @@ public class LoginController {
 		try {			
 			ec.redirect(url.toString());
 		} catch (Exception e) {
-			LOG.error("redirectToErrorPage() {}: {}", e.getClass().getSimpleName(), e.getMessage());
+			LOG.error("Error during redirect to '{}'", url, e);
 		}		
 	}
 	
@@ -167,8 +159,6 @@ public class LoginController {
 	 * @param clientModel ClientModel
 	 */
 	private void redirectWithCode(ClientModel clientModel) {
-		
-		LOG.debug("redirectWithCode() Start");	
 		
 		clientModel.setAuthorizationCode(Helper.generateCode());
 		
@@ -185,7 +175,7 @@ public class LoginController {
 		try {			
 			ec.redirect(url.toString());
 		} catch (Exception e) {
-			LOG.error("redirectWithCode() {}: {}", e.getClass().getSimpleName(), e.getMessage());
+			LOG.error("Error during redirect to '{}'", url, e);
 		}		
 	}
 

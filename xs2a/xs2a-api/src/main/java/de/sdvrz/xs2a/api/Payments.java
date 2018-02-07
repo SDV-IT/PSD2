@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -74,35 +74,35 @@ public interface Payments {
 		{@ApiResponse(code = 201, message = "OK, request received", response = PaymentInitiationResponse.class),
 			@ApiResponse(code = 400, message = "(Bad Request) Validation error occured"),
 			@ApiResponse(code = 401, message = "(Unauthorized) Access Token is not valid") })
-	public Response paymentInitiationRequest(
+	Response paymentInitiationRequest(
 			@ApiParam(value = "Version") @PathParam("version") String version,
 			@ApiParam(value = "sepa-credit-transfers / instant-sepa-credit-transfers / target-2-payments / cross-border-credit-transfers") @PathParam("payment-product") String paymentProduct,
-			@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true) 
-				@HeaderParam("Process-ID") String processId,
+			@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true)
+			@HeaderParam("Process-ID") String processId,
 			@ApiParam(value = "ID of the request (UUID)", required = true)
-				@HeaderParam("Request-ID") String requestId,
+			@HeaderParam("Request-ID") String requestId,
 			@ApiParam(value = "To be used if no OAuth Pre-Step was performed", required = false)
-				@HeaderParam("PSU-ID") String psuId,
+			@HeaderParam("PSU-ID") String psuId,
 			@ApiParam(value = "Only used in a corporate context", required = false)
-				@HeaderParam("PSU-Corporate-ID") String psuCorporateId,
+			@HeaderParam("PSU-Corporate-ID") String psuCorporateId,
 			@ApiParam(value = "Access Token as obtained from Authorization Server", required = true)
-				@HeaderParam("Authorization") String accessToken, 
+			@HeaderParam("Authorization") String accessToken,
 			@ApiParam(value = "May be contained, if the payment initiation transaction is part of a combined AIS/PIS service", required = false)
-				@HeaderParam("Consent-ID") String consentId, 
+			@HeaderParam("Consent-ID") String consentId,
 			@ApiParam(value = "The forwarded Agent header field of the http request between PSU and TPP", required = false)
-				@HeaderParam("PSU-Agent") String psuAgent, 
+			@HeaderParam("PSU-Agent") String psuAgent,
 			@ApiParam(value = "The forwarded IP Address header field consists of the corresponding http request IP Address between PSU and TPP", required = true)
-				@HeaderParam("PSU-IP-Address") String psuIpAddress, 
+			@HeaderParam("PSU-IP-Address") String psuIpAddress,
 			@ApiParam(value = "The forwarded Geo Location header field of the corresponding http request between PSU and TPP if available", required = false)
-				@HeaderParam("PSU-Geo-Location") String psuGeoLocation, 
+			@HeaderParam("PSU-Geo-Location") String psuGeoLocation,
 			@ApiParam(value = "A signature of the request by the TPP on application level", required = false)
-				@HeaderParam("signature") String signature,	
+			@HeaderParam("signature") String signature,
 			@ApiParam(value = "The certificate used for signing the request", required = false)
-				@HeaderParam("certificate") String certificate,
+			@HeaderParam("certificate") String certificate,
 			@ApiParam(value = "Standard https header element for Date and Time", required = true)
-				@HeaderParam("Date") String date,
+			@HeaderParam("Date") String date,
 			@ApiParam(value = "Request body", required = true)
-				PaymentInitiationRequest paymentInitiationRequest);
+					PaymentInitiationRequest paymentInitiationRequest);
 	
 	/**
 	 * Updates the payment initiation data by PSU data
@@ -130,30 +130,30 @@ public interface Payments {
 		{@ApiResponse(code = 200, message = "OK, request received", response = UpdatePSUDataResponse.class),
 			@ApiResponse(code = 400, message = "(Bad Request) Validation error occured"),
 			@ApiResponse(code = 401, message = "(Unauthorized) Access Token is not valid") })
-	public Response updatePSUData(
-			@ApiParam(value = "Version") @PathParam("version") String version, 
-			@ApiParam(value = "sepa-credit-transfers / instant-sepa-credit-transfers / target-2-payments / cross-border-credit-transfers") 
-				@PathParam("payment-product") String paymentProduct, 
-			@ApiParam(value = "Payment ID as received from the Payment Initiation") 
-				@PathParam("payment-id") String paymentId, 
-			@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true) 
-				@HeaderParam("Process-ID") String processId,
-			@ApiParam(value = "ID of the request (UUID)", required = true) 
-				@HeaderParam("Request-ID") String requestId, 
+	Response updatePSUData(
+			@ApiParam(value = "Version") @PathParam("version") String version,
+			@ApiParam(value = "sepa-credit-transfers / instant-sepa-credit-transfers / target-2-payments / cross-border-credit-transfers")
+			@PathParam("payment-product") String paymentProduct,
+			@ApiParam(value = "Payment ID as received from the Payment Initiation")
+			@PathParam("payment-id") String paymentId,
+			@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true)
+			@HeaderParam("Process-ID") String processId,
+			@ApiParam(value = "ID of the request (UUID)", required = true)
+			@HeaderParam("Request-ID") String requestId,
 			@ApiParam(value = "To be used if no OAuth Pre-Step was performed", required = false)
-				@HeaderParam("PSU-ID") String psuId,
+			@HeaderParam("PSU-ID") String psuId,
 			@ApiParam(value = "Only in corporate context", required = false)
-				@HeaderParam("PSU-Corporate-ID") String psuCorporateId,
+			@HeaderParam("PSU-Corporate-ID") String psuCorporateId,
 			@ApiParam(value = "Access Token as obtained from Authorization Server", required = true)
-				@HeaderParam("Authorization") String accessToken,
+			@HeaderParam("Authorization") String accessToken,
 			@ApiParam(value = "A signature of the request by the TPP on application level", required = false)
-				@HeaderParam("signature") String signature,	
+			@HeaderParam("signature") String signature,
 			@ApiParam(value = "The certificate used for signing the request", required = false)
-				@HeaderParam("certificate") String certificate,
+			@HeaderParam("certificate") String certificate,
 			@ApiParam(value = "Standard https header element for Date and Time", required = true)
-				@HeaderParam("Date") String date, 
-			@ApiParam(value = "Request body", required = true) 
-				UpdatePSUDataRequest updatePSUDataRequest);	
+			@HeaderParam("Date") String date,
+			@ApiParam(value = "Request body", required = true)
+					UpdatePSUDataRequest updatePSUDataRequest);
 	
 	/**
 	 * Reads the details of the initiated payment
@@ -177,23 +177,23 @@ public interface Payments {
 		{@ApiResponse(code = 200, message = "OK, request received", response = PaymentInitiationResponse.class),
 			@ApiResponse(code = 400, message = "(Bad Request) Validation error occured"),
 			@ApiResponse(code = 401, message = "(Unauthorized) Access Token is not valid") })
-	public Response readData(
-			@ApiParam(value = "Version") @PathParam("version") String version, 
-		@ApiParam(value = "sepa-credit-transfers / instant-sepa-credit-transfers / target-2-payments / cross-border-credit-transfers") 
-			@PathParam("payment-product") String paymentProduct, 
-		@ApiParam(value = "Payment ID as received from the Payment Initiation") 
-			@PathParam("payment-id") String paymentId, 
-		@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true) 
+	Response readData(
+			@ApiParam(value = "Version") @PathParam("version") String version,
+			@ApiParam(value = "sepa-credit-transfers / instant-sepa-credit-transfers / target-2-payments / cross-border-credit-transfers")
+			@PathParam("payment-product") String paymentProduct,
+			@ApiParam(value = "Payment ID as received from the Payment Initiation")
+			@PathParam("payment-id") String paymentId,
+			@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true)
 			@HeaderParam("Process-ID") String processId,
-		@ApiParam(value = "ID of the request (UUID)", required = true) 
-			@HeaderParam("Request-ID") String requestId, 		
-		@ApiParam(value = "Access Token as obtained from Authorization Server", required = true)
+			@ApiParam(value = "ID of the request (UUID)", required = true)
+			@HeaderParam("Request-ID") String requestId,
+			@ApiParam(value = "Access Token as obtained from Authorization Server", required = true)
 			@HeaderParam("Authorization") String accessToken,
-		@ApiParam(value = "A signature of the request by the TPP on application level", required = false)
-			@HeaderParam("signature") String signature,	
-		@ApiParam(value = "The certificate used for signing the request", required = false)
+			@ApiParam(value = "A signature of the request by the TPP on application level", required = false)
+			@HeaderParam("signature") String signature,
+			@ApiParam(value = "The certificate used for signing the request", required = false)
 			@HeaderParam("certificate") String certificate,
-		@ApiParam(value = "Standard https header element for Date and Time", required = true)
+			@ApiParam(value = "Standard https header element for Date and Time", required = true)
 			@HeaderParam("Date") String date);
 
 	/**
@@ -219,25 +219,25 @@ public interface Payments {
 		{@ApiResponse(code = 200, message = "OK, request received", response = StatusResponse.class),
 			@ApiResponse(code = 400, message = "(Bad Request) Validation error occured"),
 			@ApiResponse(code = 401, message = "(Unauthorized) Access Token is not valid") })
-	public Response statusRequest(
-			@ApiParam(value = "Version") @PathParam("version") String version, 
-		@ApiParam(value = "sepa-credit-transfers / instant-sepa-credit-transfers / target-2-payments / cross-border-credit-transfers") 
-			@PathParam("payment-product") String paymentProduct, 
-		@ApiParam(value = "Payment ID as received from the Payment Initiation") 
-			@PathParam("payment-id") String paymentId, 
-		@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true) 
+	Response statusRequest(
+			@ApiParam(value = "Version") @PathParam("version") String version,
+			@ApiParam(value = "sepa-credit-transfers / instant-sepa-credit-transfers / target-2-payments / cross-border-credit-transfers")
+			@PathParam("payment-product") String paymentProduct,
+			@ApiParam(value = "Payment ID as received from the Payment Initiation")
+			@PathParam("payment-id") String paymentId,
+			@ApiParam(value = "ID of the transaction as determined by the initiating party (UUID)", required = true)
 			@HeaderParam("Process-ID") String processId,
-		@ApiParam(value = "ID of the request (UUID)", required = true) 
-			@HeaderParam("Request-ID") String requestId, 
-		@ApiParam(value = "To be used if no OAuth Pre-Step was performed", required = false)
+			@ApiParam(value = "ID of the request (UUID)", required = true)
+			@HeaderParam("Request-ID") String requestId,
+			@ApiParam(value = "To be used if no OAuth Pre-Step was performed", required = false)
 			@HeaderParam("PSU-ID") String psuId,
-		@ApiParam(value = "Access Token as obtained from Authorization Server", required = true)
+			@ApiParam(value = "Access Token as obtained from Authorization Server", required = true)
 			@HeaderParam("Authorization") String accessToken,
-		@ApiParam(value = "A signature of the request by the TPP on application level", required = false)
-			@HeaderParam("signature") String signature,	
-		@ApiParam(value = "The certificate used for signing the request", required = false)
+			@ApiParam(value = "A signature of the request by the TPP on application level", required = false)
+			@HeaderParam("signature") String signature,
+			@ApiParam(value = "The certificate used for signing the request", required = false)
 			@HeaderParam("certificate") String certificate,
-		@ApiParam(value = "Standard https header element for Date and Time", required = true)
+			@ApiParam(value = "Standard https header element for Date and Time", required = true)
 			@HeaderParam("Date") String date);
 	
 	

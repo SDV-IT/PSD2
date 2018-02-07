@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
@@ -48,8 +48,6 @@ import de.sdvrz.xs2a.util.Util;
 @TransactionManagement(TransactionManagementType.BEAN)
 public class ConsentsImpl implements Consents {
 
-  private static final Logger LOG = LoggerFactory.getLogger(ConsentsImpl.class);
-
   List<AuthenticationMethod> authenticationMethodList;
   String authenticationMethodId;
   String userId;
@@ -84,10 +82,6 @@ public class ConsentsImpl implements Consents {
   public Response informationConsent(String version, String processId, String requestId, String psuId, String psuCorporatedId,
       String accessToken, String signature, String certificate, String date, InformationConsentRequest informationConsentRequest) {
 
-    LOG.debug(
-        "informationConsent() Start version: {}, processId: {}, requestId: {}, accessToken: {}, date: {}, informationConsentRequest.access_accounts.size: {}",
-        version, processId, requestId, accessToken, date, informationConsentRequest.getAccess_accounts().size());
-
     // initialize all user data
     authenticationMethodId = "*"; // only accounts uses consent and accounts does not need authorization (TAN, etc)    
     userId = util.checkAccessToken(accessToken) ? "*" : null;  // if Access Token userId is not needed
@@ -110,12 +104,6 @@ public class ConsentsImpl implements Consents {
   public Response updatePSUData(String version, String consentId, String processId, String requestId, String psuId,
       String psuCorporatedId, String accessToken, String signature, String certificate, String date,
       UpdatePSUDataRequest updatePSUDataRequest) {
-
-    LOG.debug(
-        "updatePSUData() Start version: {}, consentId: {}, processId: {}, requestId: {}, accessToken: {}, date: {}, psuId: {}, password: {}, authentication_method_id: {}",
-        version, consentId, processId, requestId, accessToken, date, psuId,
-        updatePSUDataRequest.getPsu_data() == null ? "null" : updatePSUDataRequest.getPsu_data().getPassword(),
-        updatePSUDataRequest.getAuthentication_method_id());
 
     UpdatePSUDataResponse updatePSUDataResponse = new UpdatePSUDataResponse();
     updatePSUDataResponse.set_links(new Links());
@@ -150,9 +138,6 @@ public class ConsentsImpl implements Consents {
   @Override
   public Response consentRequest(String version, String consentId, String processId, String requestId, String psuId,
       String psuCorporatedId, String accessToken, String signature, String certificate, String date) {
-
-    LOG.debug("consentRequest() Start version: {}, consentId: {}, processId: {}, requestId: {}, accessToken: {}, date: {}", version,
-        consentId, processId, requestId, accessToken, date);
 
     ConsentRequestResponse consentRequestResponse = new ConsentRequestResponse();
     consentRequestResponse.setAccess_accounts(new LinkedList<>());
@@ -189,18 +174,12 @@ public class ConsentsImpl implements Consents {
   @Override
   public Response deleteConsent(String version, String consentId, String processId, String requestId, String accessToken) {
 
-    LOG.debug("deleteConsent() Start version: {}, consentId: {}, processId: {}, requestId: {}, accessToken: {}", version, consentId,
-        processId, requestId, accessToken);
-
     return Response.status(Status.NO_CONTENT).build();
   }
 
   @Override
   public Response statusRequest(String version, String consentId, String processId, String requestId, String psuId,
       String psuCorporateId, String accessToken, String signature, String certificate, String date) {
-
-    LOG.debug("statusRequest() Start version: {}, consentId: {}, processId: {}, requestId: {}, accessToken: {}, date: {}", version,
-        consentId, processId, requestId, accessToken, date);
 
     StatusResponse statusResponse = new StatusResponse();
     statusResponse.setTransaction_status("AcceptedCustomerProfile");

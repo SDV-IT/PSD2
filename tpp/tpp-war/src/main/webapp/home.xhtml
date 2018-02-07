@@ -7,7 +7,7 @@
 
 <f:metadata>
 	<f:viewParam name="code"
-		value="#{authorizationModel.authorizationCode}" />
+		value="#{authorizationModel.authorizationCode.orElse('')}" />
 	<f:viewParam name="error" value="#{authorizationModel.errorAuth}" />
 	<f:viewParam name="error_description"
 		value="#{authorizationModel.errorDescriptionAuth}" />

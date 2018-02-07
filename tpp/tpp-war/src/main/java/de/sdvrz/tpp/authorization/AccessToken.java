@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -66,8 +66,6 @@ public class AccessToken {
 	 * Access Token will be obtained
 	 */
 	public void getAccessToken() {
-		LOG.debug("getAccessToken() Start");
-
 		resetErrorMessages();
 
 		if ("".equals(model.getAccessTokenResponseModel().getRefresh_token())) {
@@ -90,14 +88,14 @@ public class AccessToken {
 				LOG.info("Waiting for Access Token has been canceled");
 			}
 
-			if ("".equals(model.getAuthorizationCode())) {
+			if (!model.getAuthorizationCode().isPresent()) {
 				// error from Authorization Server - no more actions to do
 				LOG.error("getAccessToken() no Authorization Code received - Access Token can not be obtained");
 				return;
 			}
 		}
 
-		LOG.debug("getAccessToken() Authorization Code: {}, Access Token Model: {}", model.getAuthorizationCode(),
+		LOG.debug("Authorization Code: {}, Access Token Model: {}", model.getAuthorizationCode().orElse(""),
 				model.getAccessTokenResponseModel());
 
 		String url = buildUrlForAccessToken();
@@ -142,7 +140,7 @@ public class AccessToken {
 				if (httpURLConnection.getErrorStream() != null) {
 					BufferedReader br = new BufferedReader(
 							new InputStreamReader(httpURLConnection.getErrorStream(), "UTF-8"));
-					String line = null;
+					String line;
 					while ((line = br.readLine()) != null) {
 						sb.append(line + "\n");
 					}
@@ -163,14 +161,14 @@ public class AccessToken {
 			}
 
 		} catch (MalformedURLException e) {
-			LOG.error("getAccessToken() MalformedURLException: {}", e.getMessage());
+			LOG.error("Error", e);
 		} catch (IOException e) {
 			model.setError("IOException");
 			model.setErrorDescription(e.getMessage());
 			// Access Token, if any, is no longer valid - next step should be
 			// get Authorization Code
 			model.setAccessTokenResponseModel(new AccessTokenResponseModel());
-			LOG.error("getAccessToken() IOException: {}", e.getMessage(), e);
+			LOG.error("IOException: {}", e);
 		}
 	}
 
@@ -190,10 +188,8 @@ public class AccessToken {
 	 * Authorization Code will be get
 	 */
 	private void getAuthorizationCode() {
-		LOG.debug("getAuthorizationCode() Start");
-
 		// old Authorization Code, if any, must be discarded
-		model.setAuthorizationCode("");
+		model.setAuthorizationCode(null);
 
 		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
 		String url = buildUrlForAuthorizationCode();
@@ -204,7 +200,7 @@ public class AccessToken {
 			// Authorization Server
 			ec.redirect(url);
 		} catch (Exception e) {
-			LOG.error("getAuthorizationCode() {}: {}", e.getClass().getSimpleName(), e.getMessage());
+			LOG.error("Error during redirect to '{}'", url, e);
 		}
 	}
 
@@ -214,7 +210,6 @@ public class AccessToken {
 	 * @return URL for get Authorization Code request
 	 */
 	private String buildUrlForAuthorizationCode() {
-		LOG.debug("buildUrlForAuthorizationCode() Start");
 		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
 		String url = new StringBuilder().append(propertyManager.getProperty("authorization.server.schema"))
 				.append("://").append(propertyManager.getProperty("authorization.server.address")).append(':')
@@ -226,8 +221,6 @@ public class AccessToken {
 				.append("client_id=").append(propertyManager.getProperty("client.id")).append('&')
 				.append("bic=").append(propertyManager.getProperty("authorization.server.bic")).append('&')
 				.append("state=").append(new Random().nextInt()).toString();
-
-		LOG.debug("buildUrlForAuthorizationCode() End url: {}", url);
 		return url;
 	}
 
@@ -237,7 +230,7 @@ public class AccessToken {
 	 */
 	private boolean waitForAuthorizationCode() {
 		while(true) {
-			if (model.getAuthorizationCode() != null && model.getAuthorizationCode().length() > 0) {
+			if (model.getAuthorizationCode().isPresent()) {
 				return true;
 			}
 			if (model.getError() != null && model.getError().length() > 0) {
@@ -257,7 +250,6 @@ public class AccessToken {
 	 * @return URL for get Access Token request
 	 */
 	private String buildUrlForAccessToken() {
-		LOG.debug("buildUrlForAccessToken() Start");
 		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
 		String url = propertyManager.getProperty("authorization.server.schema")
 				+ "://" + propertyManager.getProperty("authorization.server.address") + ':'
@@ -270,10 +262,8 @@ public class AccessToken {
 				+ ec.getRequestServerName() + ':' + ec.getRequestServerPort()
 				+ ec.getRequestContextPath() + '&'
 				+ ("".equals(model.getAccessTokenResponseModel().getRefresh_token()) ? "code=" : "refresh_token=")
-				+ ("".equals(model.getAccessTokenResponseModel().getRefresh_token()) ? model.getAuthorizationCode()
+				+ ("".equals(model.getAccessTokenResponseModel().getRefresh_token()) ? model.getAuthorizationCode().orElse("")
 				: model.getAccessTokenResponseModel().getRefresh_token());
-
-		LOG.debug("buildUrlForAccessToken() End url: {}", url);
 		return url;
 	}
 

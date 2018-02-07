@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,10 +76,6 @@ public class Xs2aRestCommunicator {
 	public <T> Map<String, Object> sendAndReceive(String requestTitle, String requestPath, String httpMethod,
 			Map<String, String> requestPropertyMap, Map<String, String> queryStringMap, Object request, Class<T> responseClazz) throws IOException {
 
-		LOG.debug(
-				"sendAndReceive() Start requestPath: {}, httpMethod: {}, requestPropertyMap: {}, queryStringMap: {}, request class: {}, responseClazz: {}",
-				requestPath, httpMethod, requestPropertyMap, queryStringMap == null ? "null" : queryStringMap,
-				request == null ? "null" : request.getClass().getSimpleName(), responseClazz.getSimpleName());
 		Map<String, Object> responseMap = new HashMap<>();
 
 		// Build url for request (with query parameter if any)
@@ -146,8 +142,6 @@ public class Xs2aRestCommunicator {
 			logResponse(httpResponseCode, sb.toString());
 
 		}
-
-		LOG.debug("sendAndReceive() End");
 		return responseMap;
 	}
 
@@ -157,29 +151,22 @@ public class Xs2aRestCommunicator {
 	 * @return Url for Request
 	 */
 	private String getUrl() {
-		
-		LOG.debug("getUrl() Start");
-
-		String url = new StringBuilder().append(propertyManager.getProperty("xs2a.server.schema")).append("://")
+		return new StringBuilder().append(propertyManager.getProperty("xs2a.server.schema")).append("://")
 				.append(propertyManager.getProperty("xs2a.server.address")).append(':')
 				.append(propertyManager.getProperty("xs2a.server.port"))
 				.append(propertyManager.getProperty("xs2a.server.path")).toString();
-		LOG.debug("getUrl() End url: {}", url);
-		return url;
 	}	
 	
 	/**
 	 * Display request on the view
 	 * 
-	 * @param title of the request
+	 * @param requestTitle of the request
 	 * @param httpURLConnection Request Url
 	 * @param requestPropertyMap Map with header param
 	 * @param request Body class
 	 * @throws JsonProcessingException request can not be convert to JSON 
 	 */
 	private void logRequest(String requestTitle, HttpURLConnection httpURLConnection, Map<String, String> requestPropertyMap, Object request) throws JsonProcessingException {
-		
-		LOG.debug("logRequest() Start");
 		viewModel.getHttpDataFlow().append("--- ").append(requestTitle).append(' ').append("-----------------------------------------------------------------------------------------------".substring(requestTitle.length() > 95 ? 95 : requestTitle.length())).append('\n');
 		viewModel.getHttpDataFlow().append(httpURLConnection.getRequestMethod()).append(' ')
 				.append(httpURLConnection.getURL()).append('\n');	
@@ -202,8 +189,6 @@ public class Xs2aRestCommunicator {
 			ObjectMapper mapper = new ObjectMapper();
 			viewModel.getHttpDataFlow().append(" body: ").append(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request)).append('\n');			
 		}
-		
-		LOG.debug("logRequest() End");
 	}
 
 	/**
@@ -213,13 +198,10 @@ public class Xs2aRestCommunicator {
 	 * @param message
 	 */
 	private void logResponse(int httpCode, String message) {
-		
-		LOG.debug("logResponse() Start");
 		viewModel.getHttpDataFlow()
 				.append(httpCode).append("\n body: ").append(message)
 				.append('\n').append('\n');
 		viewModel.setLastResponse(message);
-		LOG.debug("logResponse() End");
 	}
 
 }

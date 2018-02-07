@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright (C) 2017 Sparda-Datenverarbeitung eG Freiligrathstrasse 32, 90482 Nuernberg, Germany
  *
@@ -64,8 +64,6 @@ public class AccountsClient implements Serializable {
    * perform /v1/accounts
    */
   public void accounts() {
-    LOG.debug("accounts() Start");
-
     viewModel.setHttpDataFlow(new StringBuilder());
     xs2aModel.setProcessUUID(UUID.randomUUID());
     
@@ -90,17 +88,14 @@ public class AccountsClient implements Serializable {
           AccountResponse.class);
 
     } catch (Exception e) {
-      LOG.error("accounts() {}: {}", e.getClass().getSimpleName(), e.getMessage(), e);
+      LOG.error("Error during communication", e);
     }
-    LOG.debug("accounts() End");
   }
 
   /**
    * perform /v1/accounts/{account-id}/balances
    */
   public void accountsBalances() {
-    LOG.debug("accountsBalances() Start");
-
     viewModel.setHttpDataFlow(new StringBuilder());
     xs2aModel.setProcessUUID(UUID.randomUUID());
 
@@ -126,18 +121,14 @@ public class AccountsClient implements Serializable {
           "GET", requestPropertyMap, null, null, AccountBalanceResponse.class);
 
     } catch (Exception e) {
-      LOG.error("accountsBalances() {}: {}", e.getClass().getSimpleName(), e.getMessage(), e);
+      LOG.error("Error during communication", e);
     }
-
-    LOG.debug("accountsBalances() End");
   }
 
   /**
    * perform /v1/accounts/{account-id}/transactions
    */
   public void accountsTransactions() {
-    LOG.debug("accountsTransactions() Start");
-
     viewModel.setHttpDataFlow(new StringBuilder());
     xs2aModel.setProcessUUID(UUID.randomUUID());
 
@@ -168,18 +159,14 @@ public class AccountsClient implements Serializable {
           AccountTransactionsResponse.class);
 
     } catch (Exception e) {
-      LOG.error("accountsTransactions() {}: {}", e.getClass().getSimpleName(), e.getMessage(), e);
+      LOG.error("Error during communication", e);
     }
-
-    LOG.debug("accountsTransactions() End");
   }
 
   /**
    * perform Strong Customer Authentication
    */
   private void performSca() {
-    LOG.debug("performSca() Start");
-
     if (authorizationModel.getAccessTokenResponseModel().getToken_type() != null
         && authorizationModel.getAccessTokenResponseModel().getToken_type().length() > 0
         && authorizationModel.getAccessTokenResponseModel().getAccess_token() != null
@@ -200,7 +187,7 @@ public class AccountsClient implements Serializable {
     Map<String, Object> response = scaClient.accountInformationConsentRequest(recurringIndicator, validUntil, frequencyPerDay);
 
     if ((int) response.get(Xs2aRestCommunicator.HTTP_CODE_KEY) != HttpURLConnection.HTTP_CREATED) {
-      LOG.error("performSca() End Error: Payment Initiation Request");
+      LOG.error("Error: Payment Initiation Request. Expected return code 201, got {}", response.get(Xs2aRestCommunicator.HTTP_CODE_KEY));
       return;
     }
 
@@ -233,7 +220,7 @@ public class AccountsClient implements Serializable {
       } else if (pathToAuthoriseTransaction != null && pathToAuthoriseTransaction.length() > 0) {
         response = scaClient.updatePSUData(pathToAuthoriseTransaction, "AUTHORISATION", authenticationMethodList);
       } else {
-        LOG.error("performSca() End Error: No one of expeted links received ");
+        LOG.error("Error: No one of expeted links received ");
         return;
       }
 
@@ -244,7 +231,7 @@ public class AccountsClient implements Serializable {
       if ((int) response.get(Xs2aRestCommunicator.HTTP_CODE_KEY) != HttpURLConnection.HTTP_OK
           || !((UpdatePSUDataResponse) response.get(Xs2aRestCommunicator.OUTPUT_KEY)).getTransaction_status()
               .equals("AcceptedTechnicalValidation")) {
-        LOG.error("performSca() End Error: HTTP code is not 200 or Transaction_status is not 'AcceptedTechnicalValidation'");
+        LOG.error("Error: HTTP code is not 200 or Transaction_status is not 'AcceptedTechnicalValidation'");
         return;
       }
 
@@ -265,7 +252,6 @@ public class AccountsClient implements Serializable {
 
       // Optionally a Get Consent Request can be sent to get all consent data for consent-ID
     }
-    LOG.debug("performSca() End");
   }
 
 }

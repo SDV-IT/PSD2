@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
@@ -57,10 +57,7 @@ public class Util {
       return false;
     }
     String[] atList = accessToken.split(" ");
-    if (atList.length == 2 && atList[0].equals("Bearer") && atList[1].length() > 0) {
-      return true;
-    }
-    return false;
+    return atList.length == 2 && atList[0].equals("Bearer") && atList[1].length() > 0;
   }
 
 }

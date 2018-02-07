@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
@@ -63,8 +63,6 @@ public class ScaClient {
    * @return Map with HTTP Code / body data
    */
   public Map<String, Object> accountInformationConsentRequest(boolean recurringIndicator, String validUntil, int frequencyPerDay) {
-    LOG.debug("accountInformationConsentRequest() Start");
-
     Map<String, Object> response = null;
     try {
       Map<String, String> requestPropertyMap = new HashMap<>();
@@ -108,9 +106,8 @@ public class ScaClient {
           requestPropertyMap, null, informationConsentRequest, InformationConsentResponse.class);
 
     } catch (Exception e) {
-      LOG.error("accountInformationConsentRequest() {}: {}", e.getClass().getSimpleName(), e.getMessage(), e);
+      LOG.error("Error during communication", e);
     }
-    LOG.debug("accountInformationConsentRequest() End response: {}", response);
     return response;
   }
 
@@ -124,8 +121,6 @@ public class ScaClient {
    * @return Map with HTTP Code / body data
    */
   public Map<String, Object> updatePSUData(String path, String type, List<AuthenticationMethod> authenticationMethodList) {
-    LOG.debug("updatePSUData() Start path: {}", path);
-
     Map<String, Object> response = null;
     try {
       Map<String, String> requestPropertyMap = new HashMap<>();
@@ -143,7 +138,7 @@ public class ScaClient {
       requestPropertyMap.put("Date", Helper.GetHttpHeaderDate());
 
       UpdatePSUDataRequest updatePSUDataRequest = new UpdatePSUDataRequest();
-      String updatePsuDataType = "";
+      String updatePsuDataType;
       if (type.equals("AUTHENTICATION_METHOD")) {
         
         for (AuthenticationMethod authenticationMethod : authenticationMethodList) {
@@ -161,10 +156,10 @@ public class ScaClient {
         updatePsuDataType = " - PSU Authentication (page 72)";
       } else if (type.equals("AUTHORISATION")) {
         
-        updatePSUDataRequest.setSca_authentication_data("TAN123");;
+        updatePSUDataRequest.setSca_authentication_data("TAN123");
         updatePsuDataType = " - PSU Authorisation (page 79)";
       } else {
-        LOG.error("updatePSUData() End type specialisation of Update PSU Data not recognized");
+        LOG.error("type specialisation of Update PSU Data not recognized");
         return null;
       }
 
@@ -172,9 +167,8 @@ public class ScaClient {
           requestPropertyMap, null, updatePSUDataRequest, UpdatePSUDataResponse.class);
 
     } catch (Exception e) {
-      LOG.error("updatePSUData() {}: {}", e.getClass().getSimpleName(), e.getMessage(), e);
+      LOG.error("Error during communication", e);
     }
-    LOG.debug("updatePSUData() End response: {}", response);
     return response;
   }
 
@@ -185,8 +179,6 @@ public class ScaClient {
    * @return Map with HTTP Code / body data
    */
   public Map<String, Object> statusRequest(String path) {
-    LOG.debug("statusRequest() Start path: {}", path);
-
     Map<String, Object> response = null;
     try {
       Map<String, String> requestPropertyMap = new HashMap<>();
@@ -206,9 +198,8 @@ public class ScaClient {
           StatusResponse.class);
 
     } catch (Exception e) {
-      LOG.error("statusRequest() {}: {}", e.getClass().getSimpleName(), e.getMessage(), e);
+      LOG.error("Error during communication", e);
     }
-    LOG.debug("statusRequest() End response: {}", response);
     return response;
   }
 
@@ -220,8 +211,6 @@ public class ScaClient {
    * @return Map with HTTP Code / body data
    */
   public Map<String, Object> consentRequest(String path) {
-    LOG.debug("consentRequest() Start path: {}", path);
-
     Map<String, Object> response = null;
     try {
       Map<String, String> requestPropertyMap = new HashMap<>();
@@ -241,9 +230,8 @@ public class ScaClient {
           ConsentRequestResponse.class);
 
     } catch (Exception e) {
-      LOG.error("consentRequest() {}: {}", e.getClass().getSimpleName(), e.getMessage(), e);
+      LOG.error("Error during communication", e);
     }
-    LOG.debug("consentRequest() End response: {}", response);
     return response;
   }
 

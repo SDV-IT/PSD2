@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,17 +49,11 @@ import de.sdvrz.xs2a.util.Util;
 @TransactionManagement(TransactionManagementType.BEAN)
 public class AccountsImpl implements Accounts {
 
-	private static final Logger LOG = LoggerFactory.getLogger(AccountsImpl.class);
-	
 	@Inject
 	Util util;
 
 	@Override
 	public Response readAccountList(String version, String processId, String requestId, String consentId, String psuId, String accessToken) {
-
-		LOG.debug("readAccountList() Start version: {}, processId: {}, requestId: {}, accessToken: {}", version,
-				processId, requestId, accessToken);		
-		
 		if (!util.checkValidation()) {
 			// HTTP Code: 400
 			return Response.status(Status.BAD_REQUEST).build();
@@ -107,10 +101,7 @@ public class AccountsImpl implements Accounts {
 	@Override
 	public Response readBalance(String version, String accountId, String processId, String requestId, String consentId, String psuId, 
 			String accessToken, String signature, String certificate, String date) {
-		
-		LOG.debug("readBalance() Start version: {}, accountId: {}, processId: {}, requestId: {}, consentId: {}, accessToken: {}, date: {}", version,
-				accountId, processId, requestId, consentId, accessToken, date);		
-		
+
 		if (!util.checkValidation()) {
 			// HTTP Code: 400
 			return Response.status(Status.BAD_REQUEST).build();
@@ -148,10 +139,7 @@ public class AccountsImpl implements Accounts {
 	@Override
 	public Response readTransactions(String version, String accountId, String processId, String requestId,
 			String consentId, String psuId, String accessToken, String signature, String certificate, String date, String dateFrom, String dateTo) {
-		
-		LOG.debug("readTransactions() Start version: {}, accountId: {}, processId: {}, requestId: {}, consentId: {}, accessToken: {}, date: {}, dateFrom: {}, dateTo: {}", version,
-				accountId, processId, requestId, consentId, accessToken, date, dateFrom, dateTo);	
-		
+
 		if (!util.checkValidation()) {
 			// HTTP Code: 400
 			return Response.status(Status.BAD_REQUEST).build();
@@ -227,9 +215,6 @@ public class AccountsImpl implements Accounts {
 	public Response readTransactionsPage(String version, String accountId, String page, String processId,
 			String requestId, String consentId, String psuId, String accessToken, String signature, String certificate,
 			String date, String dateFrom, String dateTo) {
-		
-		LOG.debug("readTransactions() Start version: {}, accountId: {}, page: {}, processId: {}, requestId: {}, consentId: {}, accessToken: {}, date: {}, dateFrom: {}, dateTo: {}", version,
-				accountId, page, processId, requestId, consentId, accessToken, date, dateFrom, dateTo);	
 		
 		if (!util.checkValidation()) {
 			// HTTP Code: 400

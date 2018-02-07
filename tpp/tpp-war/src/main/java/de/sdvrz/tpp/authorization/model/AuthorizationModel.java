@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +16,10 @@
 package de.sdvrz.tpp.authorization.model;
 
 import java.io.Serializable;
-
+import java.util.Optional;
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,9 +34,7 @@ public class AuthorizationModel implements Serializable {
 	
 	private static final long serialVersionUID = 2692517327908022720L;
 
-	private static final Logger LOG = LoggerFactory.getLogger(AuthorizationModel.class);	
-
-	private String authorizationCode;	
+	private String authorizationCode;
 	private AccessTokenResponseModel accessTokenResponseModel;	
 	private String httpCode;
 	private String httpMessage;
@@ -49,17 +45,11 @@ public class AuthorizationModel implements Serializable {
 	
 	@PostConstruct
 	void init() {
-		LOG.debug("init() Start");
-		accessTokenResponseModel = new AccessTokenResponseModel();			
+		accessTokenResponseModel = new AccessTokenResponseModel();
 	}
 	
-	@PreDestroy
-	void destroy() {
-		LOG.debug("destroy() Start");
-	}
-
-	public String getAuthorizationCode() {		
-		return authorizationCode;
+	public Optional<String> getAuthorizationCode() {
+		return Optional.ofNullable(authorizationCode);
 	}
 
 	public void setAuthorizationCode(String authorizationCode) {			

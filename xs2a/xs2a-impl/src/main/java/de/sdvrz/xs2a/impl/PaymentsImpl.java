@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
@@ -79,10 +79,6 @@ public class PaymentsImpl implements Payments {
       String psuCorporateId, String accessToken, String consentId, String psuAgent, String psuIpAddress, String psuGeoLocation,
       String signature, String certificate, String date, PaymentInitiationRequest paymentInitiationRequest) {
 
-    LOG.debug(
-        "paymentInitiationRequest() Start version: {}, paymentProduct: {}, processId: {}, requestId: {}, accessToken: {}, psuIpAddress: {}, date: {}",
-        version, paymentProduct, processId, requestId, accessToken, psuIpAddress, date);
-
     if (!util.checkValidation()) {
       // HTTP Code: 400
       return Response.status(Status.BAD_REQUEST).build();
@@ -115,12 +111,6 @@ public class PaymentsImpl implements Payments {
   public Response updatePSUData(String version, String paymentProduct, String paymentId, String processId, String requestId,
       String psuId, String psuCorporatedId, String accessToken, String signature, String certificate, String date,
       UpdatePSUDataRequest updatePSUDataRequest) {
-
-    LOG.debug(
-        "updatePSUData() Start version: {}, paymentProduct: {}, paymentId: {}, processId: {}, requestId: {}, accessToken: {}, date: {}, psuId: {}, password: {}, authentication_method_id: {}",
-        version, paymentProduct, paymentId, processId, requestId, accessToken, date, psuId,
-        updatePSUDataRequest.getPsu_data() == null ? "null" : updatePSUDataRequest.getPsu_data().getPassword(),
-        updatePSUDataRequest.getAuthentication_method_id());
 
     if (!util.checkValidation()) {
       // HTTP Code: 400
@@ -167,10 +157,6 @@ public class PaymentsImpl implements Payments {
   public Response statusRequest(String version, String paymentProduct, String paymentId, String processId, String requestId,
       String psuId, String accessToken, String signature, String certificate, String date) {
 
-    LOG.debug(
-        "statusRequest() Start version: {}, paymentProduct: {}, paymentId: {}, processId: {}, requestId: {}, psuId: {}, accessToken: {}, date: {}",
-        version, paymentProduct, processId, requestId, psuId, accessToken, date);
-
     if (!util.checkValidation()) {
       // HTTP Code: 400
       return Response.status(Status.BAD_REQUEST).build();
@@ -190,10 +176,6 @@ public class PaymentsImpl implements Payments {
   @Override
   public Response readData(String version, String paymentProduct, String paymentId, String processId, String requestId,
       String accessToken, String signature, String certificate, String date) {
-
-    LOG.debug(
-        "readData() Start version: {}, paymentProduct: {}, paymentId: {}, processId: {}, requestId: {}, accessToken: {}, date: {}",
-        version, paymentProduct, processId, requestId, accessToken, date);
 
     if (!util.checkValidation()) {
       // HTTP Code: 400
@@ -220,7 +202,6 @@ public class PaymentsImpl implements Payments {
    */
   private Links setLinks(String paymentProduct) {
     
-    LOG.debug("setLinks() Start authenticationMethodId: {}, userId: {}, userPassword: {}, authenticationData: {}", authenticationMethodId, userId, userPassword, authenticationData);;
     Links links = new Links();
     boolean allUserData = true;
     if (this.authenticationMethodId == null) {      
@@ -242,9 +223,6 @@ public class PaymentsImpl implements Payments {
     if (allUserData) {
       links.setStatus(String.format("/v1/payments/%s/1234-wertiq-983/status", paymentProduct));
     }
-    LOG.debug("setLinks() End links: {}", links);
     return links;
   }
-
-
 }

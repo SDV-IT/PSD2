@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,14 +41,13 @@ public class PropertyManager {
 	 */
 	@PostConstruct
 	void init() {
-		LOG.debug("init() Start");
 		InputStream inputStream = null;
 		try {
 			inputStream = this.getClass().getClassLoader().getResourceAsStream("config.properties");
 			properties = new Properties();
 			properties.load(inputStream);
 		} catch (IOException e) {
-			LOG.error("init() IOException: {}", e.getMessage());
+			LOG.error("IOException: {}", e.getMessage());
 		}		
 	}
 	

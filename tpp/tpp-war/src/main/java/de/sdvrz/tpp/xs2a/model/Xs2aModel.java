@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 SDV-IT, Sparda Datenverarbeitung eG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -60,7 +60,6 @@ public class Xs2aModel {
 	}
 
 	void setConsentId(String consentId) {
-		LOG.debug("setConsentId() Start consentId: {}", consentId);
 		this.consentId = consentId;
 	}
 
@@ -100,17 +99,14 @@ public class Xs2aModel {
 			return false;
 
 		}
-		if (recuringIndicator == false) {
+		if (!recuringIndicator) {
 			return false;
 		}
 		if (today == null || !today.isEqual(currentDate)) {
 			today = currentDate;
 			counterForFrequentyPerDate = 0;
 		}
-		if (++counterForFrequentyPerDate > frequenyPerDay) {
-			return false;
-		}
-		return true;
+		return ++counterForFrequentyPerDate <= frequenyPerDay;
 	}
 
 	/**
@@ -122,10 +118,7 @@ public class Xs2aModel {
 	 * @param frequentyPerDay Frequency per day
 	 */
 	public void setConsentData(String consentId, String validUntil, boolean recuringIndicator, int frequentyPerDay) {
-		LOG.debug("setConsentData() Start consentId: {}, validUntil: {}, recuringIndicator: {}, frequentyPerDay: {}",
-				consentId, validUntil, recuringIndicator, frequentyPerDay);
-		
-		try {			
+		try {
 			this.consentId = consentId;
 			this.validUntil = LocalDate.parse(validUntil);
 			this.recuringIndicator = recuringIndicator;
@@ -134,10 +127,8 @@ public class Xs2aModel {
 			this.today = LocalDate.now();
 			
 		} catch (Exception e) {
-			LOG.error("setConsentData() {}: {}", e.getClass().getSimpleName(), e.getMessage());
+			LOG.error("Error", e);
 		}
-
-		LOG.debug("setConsentData() End");
 	}
 
 }

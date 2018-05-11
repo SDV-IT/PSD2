@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>de.sdvrz.psd2</groupId>
+		<artifactId>xs2a</artifactId>
+		<version>0.9.2-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>xs2a-api</artifactId>
+	
+	<packaging>jar</packaging>
+	<name>xs2a-api</name>
+	<description>xs2a project - sample implementation: api</description>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>com.github.kongchen</groupId>
+				<artifactId>swagger-maven-plugin</artifactId>
+				<version>3.1.5</version>
+				<configuration>
+					<skipSwaggerGeneration>false</skipSwaggerGeneration>
+					<apiSources>
+						<apiSource>
+							<springmvc>false</springmvc>
+							<locations>
+								<location>de.sdvrz.xs2a.api</location>
+								<location>de.sdvrz.xs2a.api.model</location>
+							</locations>
+							<schemes>
+								<scheme>http</scheme>
+								<scheme>https</scheme>
+							</schemes>
+							<host>uedaexj1.spb.de:8080</host>
+							<basePath>/tpp</basePath>
+							<info>
+								<title>XS2A Services</title>
+								<version>${project.version}</version>
+								<description>Reference Implementation of XS2A REST Services</description>
+								<termsOfService></termsOfService>
+								<contact>
+									<name>Piotr Wiczewski</name>
+									<email>piotr.wiczewski@spb.de</email>
+								</contact>
+							</info>
+							<templatePath>${basedir}/src/main/resources/api-doc-templates/strapdown.html.hbs</templatePath>
+							<swaggerDirectory>${basedir}/swagger</swaggerDirectory>
+							<outputPath>${project.build.directory}/swagger/swagger-doc.html</outputPath>
+						</apiSource>
+					</apiSources>
+				</configuration>
+				<executions>
+					<execution>
+					 	<phase>compile</phase> 
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution> 
+				</executions>
+			</plugin>
+
+		</plugins>
+		<resources>
+			<resource>
+				<directory>swagger</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+			</resource>
+		</resources>		
+	</build>
+
+</project>

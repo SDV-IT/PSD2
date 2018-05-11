@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<f:metadata>
+	<f:viewParam name="code"
+		value="#{authorizationModel.authorizationCode.orElse('')}" />
+	<f:viewParam name="error" value="#{authorizationModel.errorAuth}" />
+	<f:viewParam name="error_description"
+		value="#{authorizationModel.errorDescriptionAuth}" />
+</f:metadata>
+
+<h:body style="font-family:Arial,Helvetica">
+	<h:panelGrid columns="1" style="width:380px">
+		<h:panelGroup>
+			<img
+				src="data:image/gif;base64,R0lGODlhMgAyAPcAAAAAAAAAMwAAZgAAmQAAzAAA/wArAAArMwArZgArmQArzAAr/wBVAABVMwBVZgBVmQBVzABV/wCAAACAMwCAZgCAmQCAzACA/wCqAACqMwCqZgCqmQCqzACq/wDVAADVMwDVZgDVmQDVzADV/wD/AAD/MwD/ZgD/mQD/zAD//zMAADMAMzMAZjMAmTMAzDMA/zMrADMrMzMrZjMrmTMrzDMr/zNVADNVMzNVZjNVmTNVzDNV/zOAADOAMzOAZjOAmTOAzDOA/zOqADOqMzOqZjOqmTOqzDOq/zPVADPVMzPVZjPVmTPVzDPV/zP/ADP/MzP/ZjP/mTP/zDP//2YAAGYAM2YAZmYAmWYAzGYA/2YrAGYrM2YrZmYrmWYrzGYr/2ZVAGZVM2ZVZmZVmWZVzGZV/2aAAGaAM2aAZmaAmWaAzGaA/2aqAGaqM2aqZmaqmWaqzGaq/2bVAGbVM2bVZmbVmWbVzGbV/2b/AGb/M2b/Zmb/mWb/zGb//5kAAJkAM5kAZpkAmZkAzJkA/5krAJkrM5krZpkrmZkrzJkr/5lVAJlVM5lVZplVmZlVzJlV/5mAAJmAM5mAZpmAmZmAzJmA/5mqAJmqM5mqZpmqmZmqzJmq/5nVAJnVM5nVZpnVmZnVzJnV/5n/AJn/M5n/Zpn/mZn/zJn//8wAAMwAM8wAZswAmcwAzMwA/8wrAMwrM8wrZswrmcwrzMwr/8xVAMxVM8xVZsxVmcxVzMxV/8yAAMyAM8yAZsyAmcyAzMyA/8yqAMyqM8yqZsyqmcyqzMyq/8zVAMzVM8zVZszVmczVzMzV/8z/AMz/M8z/Zsz/mcz/zMz///8AAP8AM/8AZv8Amf8AzP8A//8rAP8rM/8rZv8rmf8rzP8r//9VAP9VM/9VZv9Vmf9VzP9V//+AAP+AM/+AZv+Amf+AzP+A//+qAP+qM/+qZv+qmf+qzP+q///VAP/VM//VZv/Vmf/VzP/V////AP//M///Zv//mf//zP///wAAAAAAAAAAAAAAACH5BAEAAPwALAAAAAAyADIAAAj/AG+IESOQ4MCCCA8qNMgwYcOFDh9KdEgRosWJFyti3Kix40KOGUOCHMhwpEeTIiOeXJnSYsKIJQt+lBmTpMSaJF8q1PmQp0CVLkXOFIpTJsueQn3mbFl06U2eKDEe/TlUY1KbR4cy9Wi0ZUWrUVnqpPk1aFeqG0saRHvSIJpMBNHuVMtWbVqEN4jt27sXDcFMfPlmunFjrzKEyvbeAAyYb9CDk/YSa7xPYGNliff6uhF539q9k2IAjhFj32CYVPVminGj9L7QgJWxFq1YTF+CjRRzrlx4ktmDjYkNJE2wc0HXoRMTa51YthjAXErDhbnWdmBlBgHXi3Fw7+rOBPdC/+ZtmntDua0nQQtcXLeYGPVMEwZt/eekeje4KIN7szpB7mhItpsyW4iBQ2GvvafcJ/ssd9BxTzXknUC0ydbYDTiEYR1D7NVV1k56JdjYatqhMcllAoWB4F7m0fWRf+8Fxhd3lPFFT4YGPuedf3Xx2NAkxChDDBrcWZZJJicahKORTfVHVlyEPVnkQDjicBAXUyFl01JdGRSGlV9qaOCXYpBpJphWKnRmmBmmWWaVGqIZZ5hv1mlmjnSiWWeZc43pZ0FgUjnQnXDuqWFFbfKpJ5l/NlqonkviuaieKU4aZ50p+hmpompOameOEuF4p6R7JkqnpnOiKlGemNop55hoVpPq6qwMnXnRo6mWFGiVs9q6pqqFbpTqpr8myhCuqKbpUJvD7gmomHnmuqyYFYlZaLVWPusnRsNSK6i2nibbLbAgectotdviqKS0fN5F0qbTpsuorc/q2dCrwXpEaK7I6quql5C2Cqy3pIZBMK9kAvrpqCzZmq1F+z5EqUjXqnlrquCyy629vGrEK8BvzukpoxUbGBAAOw==" />
+			<h2 style="display: block; float: right">Third Party Provider
+				(TPP)</h2>
+		</h:panelGroup>
+	</h:panelGrid>
+	<h:form id="TppExample"
+		style="width:1140px; left:50px; position:relative">
+		<h3>To Authorization Server</h3>
+		<h:panelGrid columns="1" border="1" style="width:100%">
+			<h:panelGroup>
+				<h:panelGrid columns="1" style="display:inline;vertical-align:top">
+					<h:commandButton actionListener="#{controller.getAccessToken}"
+						value="Get Access Token" style="width:160px" />
+					<h:commandButton onclick="window.location.reload()"
+						value="Refresh View" style="width:160px" />
+				</h:panelGrid>
+				<h:panelGrid columns="2" style="display:inline">
+					<h:outputText value="Scope:&nbsp;" />
+					<h:outputText
+						value="#{authorizationModel.accessTokenResponseModel.scope}"
+						style="color:blue;" />
+					<h:outputText value="Token Type:&nbsp;" />
+					<h:outputText
+						value="#{authorizationModel.accessTokenResponseModel.token_type}"
+						style="color:blue;" />
+					<h:outputText value="Expires in:&nbsp;" />
+					<h:outputText
+						value="#{authorizationModel.accessTokenResponseModel.expires_in}"
+						style="color:blue;" />
+					<h:outputText value="Refresh Token:&nbsp;" />
+					<h:outputText
+						value="#{authorizationModel.accessTokenResponseModel.refresh_token}"
+						style="color:blue;" />
+					<h:outputText value="Access Token:&nbsp;"
+						style="vertical-align:top" />
+					<h:inputTextarea
+						value="#{authorizationModel.accessTokenResponseModel.access_token}"
+						rows="5" cols="100" readonly="true"
+						style="border:none; overflow:auto;color:blue;background-color:#F5F5F5;" />
+					<h:outputText value="&nbsp;" />
+					<h:outputText value="&nbsp;" />
+					<h:outputText value="HTTP Code:&nbsp;" style="color:grey;" />
+					<h:outputText value="#{authorizationModel.httpCode}"
+						style="color:red;" />
+					<h:outputText value="HTTP Message:&nbsp;" style="color:grey;" />
+					<h:outputText value="#{authorizationModel.httpMessage}"
+						style="color:red;" />
+					<h:outputText value="Error:&nbsp;" style="color:grey;" />
+					<h:outputText value="#{authorizationModel.error}"
+						style="color:red;" />
+					<h:outputText value="Error description:&nbsp;" style="color:grey;" />
+					<h:outputText value="#{authorizationModel.errorDescription}"
+						style="color:red;" />
+				</h:panelGrid>
+			</h:panelGroup>
+		</h:panelGrid>
+		<h:panelGrid columns="2" style="width:100%">
+			<h3>To XS2A Server</h3>
+			<h:outputLink value="swagger-doc.html"
+				style="float:right; display:block; width:auto">About XS2A interface (Swagger)</h:outputLink>
+		</h:panelGrid>
+		<h:panelGrid columns="1" border="1" style="width:100%">
+			<h:panelGroup>
+				<h:panelGrid columns="1" style="display:inline;vertical-align:top">
+					<h:commandButton actionListener="#{controller.accounts}"
+						value="accounts" style="width:160px" />
+					<h:commandButton actionListener="#{controller.accountsBalances}"
+						value="accounts: balances" style="width:160px" />
+					<h:commandButton
+						actionListener="#{controller.accountsTransactions}"
+						value="accounts: transactions" style="width:160px" />
+					<h:outputText value="&nbsp;" />
+					<h:commandButton actionListener="#{controller.paymentInitiation}"
+						value="payment initiation" style="width:160px" />
+					<h:outputText value="&nbsp;" />
+					<h:commandButton actionListener="#{controller.confirmationOfFunds}"
+						value="confirmation of funds" style="width:160px" />
+				</h:panelGrid>
+				<h:panelGrid columns="2" style="display:inline">
+					<h:outputText value="HTTP Data flow:&nbsp;"
+						style="vertical-align:top" />
+					<h:inputTextarea value="#{viewModel.httpDataFlow}" rows="38"
+						cols="101" readonly="true"
+						style="border:none; overflow:auto;color:blue;background-color:#F5F5F5;" />
+				</h:panelGrid>
+			</h:panelGroup>
+		</h:panelGrid>
+	</h:form>
+</h:body>
+</html>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>de.sdvrz.psd2</groupId>
+		<artifactId>tpp</artifactId>
+		<version>0.9.2-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>tpp-ear</artifactId>
+	
+	<packaging>ear</packaging>
+	<name>tpp-ear</name>
+	<description>tpp project - sample implementation: ear</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>de.sdvrz.psd2</groupId>
+			<artifactId>tpp-war</artifactId>
+			<version>${project.version}</version>
+			<type>war</type>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ear-plugin</artifactId>
+				<configuration>
+					<defaultLibBundleDir>/lib</defaultLibBundleDir>
+					<modules>
+						<webModule>
+							<groupId>de.sdvrz.psd2</groupId>
+							<artifactId>tpp-war</artifactId>
+							<contextRoot>/tpp</contextRoot>
+						</webModule>
+					</modules>
+				</configuration>
+			</plugin>			
+		</plugins>
+	</build>
+
+</project>
